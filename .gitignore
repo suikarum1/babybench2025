@@ -1,5 +1,6 @@
 # BabyBench files and directories
 results/*
+!results/__init__.py
 MUJOCO*
 
 # Byte-compiled / optimized / DLL files
