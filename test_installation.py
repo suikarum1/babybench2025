@@ -22,7 +22,7 @@ def main():
         import mimoEnv
         from mimoEnv.envs.mimo_env import MIMoEnv
         import mimoEnv.utils as env_utils
-        import utils as bb_utils
+        import babybench.utils as bb_utils
     except ImportError as e:
         print("Please make sure you have MIMo installed")
         print(e)

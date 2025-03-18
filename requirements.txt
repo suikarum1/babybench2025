@@ -1,0 +1,15 @@
+numpy
+matplotlib
+imageio
+scipy
+trimesh
+pyyaml
+cachetools
+CacheToolsUtils
+networkx
+rtree
+mujoco==3.3.0
+gymnasium==0.28.1
+stable-baselines3>=2.0.0
+opencv-python
+torch==2.6.0

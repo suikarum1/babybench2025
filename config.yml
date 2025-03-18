@@ -1,14 +1,14 @@
 # --- General options --- #
 
-environment : crib # plain, crib, cubes
+environment : crib  # base, crib, mirror
+behavior : self_touch   # self_touch, hand_rehard, mirror
 actuation_model : spring_damper  # spring_damper, muscle, positional
 max_episode_steps : 1000
 
-# --- BabyBench behaviors --- #
+# --- Rendering options --- #
+render_width : 480
+render_height : 480
 
-self_touch : True
-hand_regard : False
-mirror : False
 
 # --- Sensory modalities --- #
 
@@ -19,12 +19,14 @@ proprio_limits : True
 proprio_actuation : True
 
 # Vestibular
-vestibular : True
+vestibular_active : True
 
 # Vision
+vision_active : True
 vision_resolution : 64
 
 # Touch
+touch_active : True
 touch_scale : 1.0
 touch_function : force_vector
 touch_response_function : spread_linear
@@ -54,4 +56,5 @@ touch_right_fingers : True
 
 # --- Motor modalities --- #
 
-# Lock joints
+# Lock body parts
+

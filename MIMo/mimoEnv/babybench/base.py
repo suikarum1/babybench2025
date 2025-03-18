@@ -33,39 +33,6 @@ BASE_XML = os.path.join(SCENE_DIRECTORY, "babybench_base.xml")
 :meta hide-value:
 """
 
-DEFAULT_TOUCH_PARAMS = {
-    "scales": {
-        "left_toes": 0.010,
-        "right_toes": 0.010,
-        "left_foot": 0.015,
-        "right_foot": 0.015,
-        "left_lower_leg": 0.038,
-        "right_lower_leg": 0.038,
-        "left_upper_leg": 0.027,
-        "right_upper_leg": 0.027,
-        "hip": 0.025,
-        "lower_body": 0.025,
-        "upper_body": 0.030,
-        "head": 0.013,
-        "left_eye": 1.0,
-        "right_eye": 1.0,
-        "left_upper_arm": 0.024,
-        "right_upper_arm": 0.024,
-        "left_lower_arm": 0.024,
-        "right_lower_arm": 0.024,
-        "left_hand": 0.007,
-        "right_hand": 0.007,
-        "left_fingers": 0.002,
-        "right_fingers": 0.002,
-    },
-    "touch_function": "force_vector",
-    "response_function": "spread_linear",
-}
-""" Default touch parameters.
-
-:meta hide-value:
-"""
-
 VISION_PARAMS = {
     "eye_left": {"width": 64, "height": 64},
     "eye_right": {"width": 64, "height": 64},
@@ -105,13 +72,39 @@ class BabyBenchEnv(MIMoEnv):
                  model_path=BASE_XML,
                  frame_skip=1,
                  proprio_params=DEFAULT_PROPRIOCEPTION_PARAMS,
-                 touch_params=DEFAULT_TOUCH_PARAMS,
                  vision_params=VISION_PARAMS,
                  vestibular_params=DEFAULT_VESTIBULAR_PARAMS,
+                 touch_params=DEFAULT_TOUCH_PARAMS,
                  actuation_model='spring_damper',
                  width=DEFAULT_SIZE,
                  height=DEFAULT_SIZE,
                  **kwargs):
+
+        if kwargs['vision_active'] is not None:
+            if kwargs['vision_active'] is False:
+                vision_params = None
+            elif kwargs['vision_resolution'] is not None:
+                vision_params = {
+                    "eye_left": {"width": kwargs['vision_resolution'], "height": kwargs['vision_resolution']},
+                    "eye_right": {"width": kwargs['vision_resolution'], "height": kwargs['vision_resolution']},
+                }
+        if kwargs['vestibular_active'] is not None:
+            if kwargs['vestibular_active'] is False:
+                vestibular_params = None
+
+        if kwargs['touch_active'] is not None:
+            if (kwargs['touch_active'] is False) or (kwargs['touch_scale']==0):
+                touch_params = None
+            else:
+                if kwargs['touch_scale'] is not None:
+                    for body in touch_params["scales"]:
+                        touch_params["scales"][body] = DEFAULT_TOUCH_PARAMS["scales"][body]*kwargs['touch_scale']
+                if kwargs['touch_function'] is not None:
+                    touch_params["touch_function"] = kwargs['touch_function']
+                if kwargs['touch_response_function'] is not None:
+                    touch_params["response_function"] = kwargs['touch_response_function']
+
+        self.behavior = kwargs['behavior']
 
         super().__init__(model_path=model_path,
                          frame_skip=frame_skip,
@@ -122,9 +115,8 @@ class BabyBenchEnv(MIMoEnv):
                          actuation_model=ACTUATION_MODELS[actuation_model],
                          goals_in_observation=False,
                          done_active=False,
-                         width=DEFAULT_SIZE,
-                         height=DEFAULT_SIZE,
-                         **kwargs)
+                         width=width,
+                         height=height,)
 
         self.right_hand_geoms = env_utils.get_geoms_for_body(self.model, env_utils.get_body_id(self.model, body_name="right_hand"))
         self.left_hand_geoms = env_utils.get_geoms_for_body(self.model, env_utils.get_body_id(self.model, body_name="left_hand"))
@@ -220,15 +212,18 @@ class BabyBenchEnv(MIMoEnv):
     def _info(self):
         info = {
             'steps' : self.steps,
-            'self_touch' : self._info_self_touch(),
-            'hand_regard' : self._info_hand_regard(),
         }
+        if self.behavior == 'self_touch':
+            info['self_touch'] = self._info_self_touch(),
+        elif self.behavior == 'hand_regard':
+            info['hand_regard'] = self._info_hand_regard(),
         return info
 
     def _info_init(self):
-        if True:
+        if self.behavior == 'self_touch':
             self._self_touch_right_hand = []
             self._self_touch_left_hand = []
+        elif self.behavior == 'hand_regard':
             self._hand_regard_right_eye_right_hand = 0
             self._hand_regard_right_eye_left_hand = 0
             self._hand_regard_left_eye_right_hand = 0
