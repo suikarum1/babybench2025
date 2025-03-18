@@ -1,0 +1,97 @@
+<mujocoinclude>
+    <asset>
+        <material name="antique_fucsia" rgba="0.57 .36 .51 1" shininess="0.99" reflectance="0"/>
+		<material name="pastel_purple" rgba="0.69 .61 .85 1" shininess="0.99" reflectance="0"/>
+		<material name="apricot" rgba="0.98 .80 .69 1" shininess="0.99" reflectance="0"/>
+		<material name="acqua" rgba="0.73 .83 .90 1" shininess="0.99" reflectance="0"/>
+		<material name="brick_red" rgba=".79 .25 .32 1" shininess="0.99" reflectance="0"/>
+		<material name="cambridge_blue" rgba=".64 .76 .68 1" shininess="0.99" reflectance="0"/>
+		<material name="flax" rgba=".93 .86 .51 1" shininess="0.99" reflectance="0"/>
+		<material name="corn_blue" rgba=".58 .80 .92 1" shininess="0.99" reflectance="0"/>
+		<material name="coral" rgba=".94 .50 .50 1" shininess="0.99" reflectance="0"/>
+    </asset>
+
+
+    <worldbody>
+        <body name="red_cube" pos=".3 0.3 0.03">
+			<freejoint/>
+			<geom type="box" material="brick_red" size="0.03 0.03 0.03" pos="0 0 0" density="200"/>
+		</body>
+		
+		<body name="yellow_cube" pos=".31 0.3 0.1" euler="0 0 10">
+			<freejoint/>
+			<geom type="box" material="flax" size="0.03 0.03 0.03" pos="0 0 0" density="200"/>
+		</body>
+		
+		<body name="blue_cube" pos=".31 0.3 0.16" euler="0 0 15">
+			<freejoint/>
+			<geom type="box" material="cambridge_blue" size="0.02 0.02 0.02" pos="0 0 0" density="200"/>
+		</body>
+		
+		<body name="green_sphere" pos=".3 -0.2 0.03">
+			<freejoint/>
+			<geom type="sphere" material="cambridge_blue" size="0.025" pos="0 0 0" density="200"/>
+		</body>
+		
+		<body name="blue_sphere" pos=".2 -0.3 0.02">
+			<freejoint/>
+			<geom type="sphere" material="antique_fucsia" size="0.02" pos="0 0 0" density="200"/>
+		</body>
+		
+		<body name="orange_sphere" pos=".15 0.3 0.04">
+			<freejoint/>
+			<geom type="sphere" material="apricot" size="0.04" pos="0 0 0" density="200"/>
+		</body>
+
+        <body name="red_sphere" pos="-.25 .35 0.11">
+			<freejoint/>
+			<geom type="sphere" material="brick_red" size="0.1" pos="0 0 0" density="200"/>
+		</body>	
+
+        <body name="yellow_sphere" pos="-.55 -.25 0.05">
+			<freejoint/>
+			<geom type="sphere" material="flax" size="0.05" pos="0 0 0" density="200"/>
+		</body>	        
+		
+		<body name="castle_base1" pos="-.2 -.4 .05" euler="0 0 40">
+			<freejoint/>
+			<geom type="box" material="antique_fucsia" size=".03 .03 .05" density="200"/>
+		</body>
+		
+		<body name="castle_base2" pos="-.1 -.5 .05" euler="0 0 70">
+			<freejoint/>
+			<geom type="box" material="coral" size=".03 .03 .05" density="200"/>
+		</body>
+		
+		<body name="castle_bridge" pos="-.15 -.45 .12" euler="0 0 45">
+			<freejoint/>
+			<geom type="box" material="corn_blue" size=".045 .125 .025" density="200"/>
+		</body>
+		
+		<body name="castle_top1" pos="-.10 -.5 .18" euler="0 0 50">
+			<freejoint/>
+			<geom type="box" material="cambridge_blue" size=".03 .03 .03" density="200"/>
+		</body>
+		
+		<body name="castle_tower1" pos="-.175 -.425 .2" euler="0 0 50">
+			<freejoint/>
+			<geom type="box" material="flax" size=".03 .03 .05" density="200"/>
+		</body>
+		
+		<body name="castle_top2" pos="-.297 -.303 .03" euler="0 0 55">
+			<freejoint/>
+			<geom type="box" material="apricot" size=".03 .03 .03" density="200"/>
+		</body>
+		
+		<body name="castle_top3" pos="-.05 -.405 .03" euler="0 0 45">
+			<freejoint/>
+			<geom type="box" material="acqua" size=".03 .03 .03" density="200"/>
+		</body>
+		
+		<body name="castle_top4" pos="-.175 -.425 .28" euler="0 0 30">
+			<freejoint/>
+			<geom type="box" material="coral" size=".03 .03 .03" density="200"/>
+		</body>
+    </worldbody>
+
+</mujocoinclude>
