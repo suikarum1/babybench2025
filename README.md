@@ -50,13 +50,13 @@ All done! You are ready to start using BabyBench.
    python test_installation.py
    ```
 
-This will run a test to check that the everything is correctly installed. If you encounter any issues, visit the [troubleshooting page](https://github.com/fcomlop/BabyBench/wiki/troubleshooting)
+This will run a test to check that the everything is correctly installed. If you encounter any issues, visit the [troubleshooting page](https://github.com/fcomlop/BabyBench2025/wiki/troubleshooting)
 
 ## Train MIMo
 
-The aim for BabyBench is to get MIMo to learn one or more of the [target behaviors](https://github.com/fcomlop/wiki/environments) without any external supervision, i.e. without extrinsic rewards. Your goal is to train a policy that matches sensory observation (proprioception, vision, touch) to actions. To do so, we provide some [environments](https://github.com/fcomlop/wiki/environments). To change the configuration, simply change the values of `config.yml`.
+The aim for BabyBench is to get MIMo to learn one or more of the [target behaviors](https://github.com/fcomlop/wiki/environments) without any external supervision, i.e. without extrinsic rewards. Your goal is to train a policy that matches sensory observation (proprioception, vision, touch) to actions. To do so, we provide some [environments](https://github.com/fcomlop/BabyBench2025/wiki/environments). To change the configuration, simply change the values of `config.yml`.
 
-If you are not sure where to begin, we recommend having a look at the `examples` directory and [this wiki page](https://github.com/fcomlop/wiki/examples).
+If you are not sure where to begin, we recommend having a look at the `examples` directory and [this wiki page](https://github.com/fcomlop/BabyBench2025/wiki/examples).
 
 ## Make your submission
 
@@ -72,23 +72,23 @@ First-round submission should consist of:
 
 ## How to...?
 
-For further information, check our [Wiki](https://github.com/fcomlop/BabyBench/wiki).  
+For further information, check our [Wiki](https://github.com/fcomlop/BabyBench2025/wiki).  
 In particular, if you want to know more about:
 
-- the training environments, see [here](https://github.com/fcomlop/wiki/environments)
-- the target behaviors, see [here](https://github.com/fcomlop/wiki/behaviors)
-- examples, see [here](https://github.com/fcomlop/wiki/examples)
-- how to generate the submission files, see [here](https://github.com/fcomlop/wiki/submission)
-- the evaluation process, see [here](https://github.com/fcomlop/wiki/evaluation)
-- resources about intrinsic motivations and open-ended learning, see [here](https://github.com/fcomlop/wiki/resources)
+- the training environments, see [here](https://github.com/fcomlop/BabyBench2025/wiki/environments)
+- the target behaviors, see [here](https://github.com/fcomlop/wiki/BabyBench2025/behaviors)
+- examples, see [here](https://github.com/fcomlop/BabyBench2025/wiki/examples)
+- how to generate the submission files, see [here](https://github.com/fcomlop/BabyBench2025/wiki/submission)
+- the evaluation process, see [here](https://github.com/fcomlop/BabyBench2025/wiki/evaluation)
+- resources about intrinsic motivations and open-ended learning, see [here](https://github.com/fcomlop/BabyBench2025/wiki/resources)
 
-... or see the [FAQ](https://github.com/fcomlop/wiki/FAQ) for common questions or errors.
+... or see the [FAQ](https://github.com/fcomlop/BabyBench2025/wiki/faq) for common questions or errors.
 
 ## Support
 
-Feel free to contact us for any We thank the developers of the REAL cmopetition for problems or additional questions about BabyBench. You can post an issue [here](https://github.com/fcomlop/BabyBench/issues) on Github or directly [contact the organizers via mail](mailto:fcomlop@gmail.com?subject=[BabyBench]%20Question).
+Feel free to contact us for any questions about BabyBench. You can post an issue [here](https://github.com/fcomlop/BabyBench2025/issues) on Github or [contact the organizers via mail](mailto:fcomlop@gmail.com?subject=[BabyBench]%20Question).
 
-We highly encourage you to collaborate with other participants! You can submit your problems, questions or ideas in the [discussion forum](https://github.com/fcomlop/BabyBench/discussions).   
+We highly encourage you to collaborate with other participants! You can submit your problems, questions or ideas in the [discussion forum](https://github.com/fcomlop/BabyBench2025/discussions).   
 
 ## Acknowledgements
 
