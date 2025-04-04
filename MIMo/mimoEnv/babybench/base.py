@@ -19,16 +19,133 @@ defined in :data:`STANDUP_XML`.
 import os
 import numpy as np
 import mujoco
+import pickle
+import time
 
-from mimoEnv.envs.mimo_env import MIMoEnv, SCENE_DIRECTORY, \
-                                  DEFAULT_PROPRIOCEPTION_PARAMS, DEFAULT_VESTIBULAR_PARAMS, \
-                                  DEFAULT_TOUCH_PARAMS, DEFAULT_TOUCH_PARAMS_V2
+from mimoEnv.envs.mimo_env import MIMoEnv, SCENE_DIRECTORY
 from mimoActuation.actuation import SpringDamperModel, PositionalModel
 from mimoActuation.muscle import MuscleModel
 import mimoEnv.utils as env_utils
 
-BASE_XML = os.path.join(SCENE_DIRECTORY, "babybench_base.xml")
+
+SCENE_XML = os.path.join(SCENE_DIRECTORY, "babybench_base.xml")
 """ Path to the stand up scene.
+
+:meta hide-value:
+"""
+
+VESTIBULAR_PARAMS = {
+    "sensors": ["vestibular_acc", "vestibular_gyro"],
+}
+""" Default vestibular parameters.
+
+:meta hide-value:
+"""
+
+
+PROPRIOCEPTION_PARAMS = {
+    "components": ["velocity", "torque", "limits", "actuation"],
+    "threshold": .035,
+}
+""" Default parameters for proprioception. Relative joint positions are always included.
+
+:meta hide-value:
+"""
+
+TOUCH_PARAMS = {
+    "scales": {
+        "left_toes": 0.010,
+        "right_toes": 0.010,
+        "left_foot": 0.015,
+        "right_foot": 0.015,
+        "left_lower_leg": 0.038,
+        "right_lower_leg": 0.038,
+        "left_upper_leg": 0.027,
+        "right_upper_leg": 0.027,
+        "hip": 0.025,
+        "lower_body": 0.025,
+        "upper_body": 0.030,
+        "head": 0.013,
+        "left_eye": 1.0,
+        "right_eye": 1.0,
+        "left_upper_arm": 0.024,
+        "right_upper_arm": 0.024,
+        "left_lower_arm": 0.024,
+        "right_lower_arm": 0.024,
+        "left_hand": 0.007,
+        "right_hand": 0.007,
+        "left_fingers": 0.002,
+        "right_fingers": 0.002,
+    },
+    "touch_function": "force_vector",
+    "response_function": "spread_linear",
+}
+""" Default touch parameters.
+
+:meta hide-value:
+"""
+
+TOUCH_PARAMS_V2 = {
+    "scales": {
+        "left_big_toe": 0.010,
+        "right_big_toe": 0.010,
+        "left_toes": 0.010,
+        "right_toes": 0.010,
+        "left_foot": 0.015,
+        "right_foot": 0.015,
+        "left_lower_leg": 0.038,
+        "right_lower_leg": 0.038,
+        "left_upper_leg": 0.027,
+        "right_upper_leg": 0.027,
+        "hip": 0.025,
+        "lower_body": 0.025,
+        "upper_body": 0.030,
+        "head": 0.013,
+        "left_eye": 1.0,
+        "right_eye": 1.0,
+        "left_upper_arm": 0.024,
+        "right_upper_arm": 0.024,
+        "left_lower_arm": 0.024,
+        "right_lower_arm": 0.024,
+        "left_hand": 0.007,
+        "right_hand": 0.007,
+        "left_ffdistal": 0.002,
+        "left_mfdistal": 0.002,
+        "left_rfdistal": 0.002,
+        "left_lfdistal": 0.002,
+        "left_thdistal": 0.002,
+        "left_ffmiddle": 0.004,
+        "left_mfmiddle": 0.004,
+        "left_rfmiddle": 0.004,
+        "left_lfmiddle": 0.004,
+        "left_thhub": 0.004,
+        "left_ffknuckle": 0.004,
+        "left_mfknuckle": 0.004,
+        "left_rfknuckle": 0.004,
+        "left_lfknuckle": 0.004,
+        "left_thbase": 0.004,
+        "left_lfmetacarpal": 0.007,
+        "right_ffdistal": 0.002,
+        "right_mfdistal": 0.002,
+        "right_rfdistal": 0.002,
+        "right_lfdistal": 0.002,
+        "right_thdistal": 0.002,
+        "right_ffmiddle": 0.004,
+        "right_mfmiddle": 0.004,
+        "right_rfmiddle": 0.004,
+        "right_lfmiddle": 0.004,
+        "right_thhub": 0.004,
+        "right_ffknuckle": 0.004,
+        "right_mfknuckle": 0.004,
+        "right_rfknuckle": 0.004,
+        "right_lfknuckle": 0.004,
+        "right_thbase": 0.004,
+        "right_lfmetacarpal": 0.007,
+    },
+    "touch_function": "force_vector",
+    "response_function": "spread_linear",
+}
+""" Default touch parameters for the v2 version of MIMo with five fingers and two toes.
 
 :meta hide-value:
 """
@@ -69,42 +186,49 @@ class BabyBenchEnv(MIMoEnv):
         init_crouch_position (numpy.ndarray): The initial position.
     """
     def __init__(self,
-                 model_path=BASE_XML,
+                 model_path=SCENE_XML,
                  frame_skip=1,
-                 proprio_params=DEFAULT_PROPRIOCEPTION_PARAMS,
+                 proprio_params=PROPRIOCEPTION_PARAMS,
                  vision_params=VISION_PARAMS,
-                 vestibular_params=DEFAULT_VESTIBULAR_PARAMS,
-                 touch_params=DEFAULT_TOUCH_PARAMS,
-                 actuation_model='spring_damper',
+                 vestibular_params=VESTIBULAR_PARAMS,
+                 touch_params=TOUCH_PARAMS,
+                 actuation_model=SpringDamperModel,
                  width=DEFAULT_SIZE,
                  height=DEFAULT_SIZE,
                  **kwargs):
 
-        if kwargs['vision_active'] is not None:
-            if kwargs['vision_active'] is False:
-                vision_params = None
-            elif kwargs['vision_resolution'] is not None:
-                vision_params = {
-                    "eye_left": {"width": kwargs['vision_resolution'], "height": kwargs['vision_resolution']},
-                    "eye_right": {"width": kwargs['vision_resolution'], "height": kwargs['vision_resolution']},
-                }
-        if kwargs['vestibular_active'] is not None:
-            if kwargs['vestibular_active'] is False:
-                vestibular_params = None
-
-        if kwargs['touch_active'] is not None:
-            if (kwargs['touch_active'] is False) or (kwargs['touch_scale']==0):
-                touch_params = None
-            else:
-                if kwargs['touch_scale'] is not None:
-                    for body in touch_params["scales"]:
-                        touch_params["scales"][body] = DEFAULT_TOUCH_PARAMS["scales"][body]*kwargs['touch_scale']
-                if kwargs['touch_function'] is not None:
-                    touch_params["touch_function"] = kwargs['touch_function']
-                if kwargs['touch_response_function'] is not None:
-                    touch_params["response_function"] = kwargs['touch_response_function']
-
-        self.behavior = kwargs['behavior']
+        if kwargs['config'] is not None:
+            # Modify default values from config values
+            config = kwargs['config']
+            if config['vision_active'] is not None:
+                if config['vision_active'] is False:
+                    vision_params = None
+                elif config['vision_resolution'] is not None:
+                    vision_params = {
+                        "eye_left": {"width": config['vision_resolution'], "height": config['vision_resolution']},
+                        "eye_right": {"width": config['vision_resolution'], "height": config['vision_resolution']},
+                    }
+            if config['vestibular_active'] is not None:
+                if config['vestibular_active'] is False:
+                    vestibular_params = None
+            if config['touch_active'] is not None:
+                if (config['touch_active'] is False) or (config['touch_scale']==0):
+                    touch_params = None
+                else:
+                    if config['touch_scale'] is not None:
+                        for body in touch_params["scales"]:
+                            touch_params["scales"][body] = TOUCH_PARAMS["scales"][body]*config['touch_scale']
+                    if config['touch_function'] is not None:
+                        touch_params["touch_function"] = config['touch_function']
+                    if config['touch_response'] is not None:
+                        touch_params["response_function"] = config['touch_response']
+            if config['actuation_model'] is not None:
+                actuation_model = ACTUATION_MODELS[config['actuation_model']]
+            
+            self.behavior = config['behavior']
+            self.save_dir = config['save_dir']
+            self.save_logs_every = config['save_logs_every']
+            self.training = kwargs['training']
 
         super().__init__(model_path=model_path,
                          frame_skip=frame_skip,
@@ -112,16 +236,12 @@ class BabyBenchEnv(MIMoEnv):
                          touch_params=touch_params,
                          vision_params=vision_params,
                          vestibular_params=vestibular_params,
-                         actuation_model=ACTUATION_MODELS[actuation_model],
+                         actuation_model=actuation_model,
                          goals_in_observation=False,
                          done_active=False,
                          width=width,
                          height=height,)
 
-        self.right_hand_geoms = env_utils.get_geoms_for_body(self.model, env_utils.get_body_id(self.model, body_name="right_hand"))
-        self.left_hand_geoms = env_utils.get_geoms_for_body(self.model, env_utils.get_body_id(self.model, body_name="left_hand"))
-        self.mimo_bodies = env_utils.get_child_bodies(self.model, env_utils.get_body_id(self.model, body_name="hip"))
-        self.mimo_geoms = np.concatenate([np.array(env_utils.get_geoms_for_body(self.model, body_id)) for body_id in self.mimo_bodies])
         
         # initialize 
         self.set_state(self.init_qpos, self.init_qvel)
@@ -133,8 +253,7 @@ class BabyBenchEnv(MIMoEnv):
         self.init_qvel = self.data.qvel.copy()
         self.steps = 0
 
-        # initialize info functions
-        self._info_init()
+        self._info_hist = []
                          
     def compute_reward(self, **kwargs):
         """ Dummy function for intrinsically motivated learning.
@@ -153,19 +272,35 @@ class BabyBenchEnv(MIMoEnv):
             Dict: Observations after reset.
         """
 
+        # save info logs and reset info functions
+        if self.training:
+            self._info_reset()
+        
         # initialize state
         self.set_state(self.init_qpos, self.init_qvel)
 
-        # perform 10 steps with random actions for randomization
-        for _ in range(10):
-            self._set_action(self.action_space.sample())
-            self._single_mujoco_step()
+        # randomize initial state
+        self._randomize_reset()
 
-        # reset info functions
-        self._info_init()
-        
         self.steps = 0
         return self._get_obs()
+
+    def _randomize_reset(self):
+        """ 
+        To be replaced with custom function for each behavior
+        """
+        pass
+
+    def _info_reset(self):
+        """
+        Only called during training.
+        """
+        self._info_hist.append(self._info())
+        if self.steps % self.save_logs_every == 0:
+            # Save info to file
+            with open(f'{self.save_dir}/logs/training.pkl', 'wb') as f:
+                pickle.dump(self._info_hist, f, -1)
+        self._info_init()
 
     def _step_callback(self):
         pass
@@ -203,6 +338,7 @@ class BabyBenchEnv(MIMoEnv):
         self._obs_callback()
 
         info = self._info()
+        info['steps'] = self.steps
         
         terminated, truncated = self._is_done(None, self.goal, info)
         reward = self.compute_reward()
@@ -210,106 +346,16 @@ class BabyBenchEnv(MIMoEnv):
         return obs, reward, terminated, truncated, info
         
     def _info(self):
-        info = {
-            'steps' : self.steps,
-        }
-        if self.behavior == 'self_touch':
-            info['self_touch'] = self._info_self_touch(),
-        elif self.behavior == 'hand_regard':
-            info['hand_regard'] = self._info_hand_regard(),
-        return info
+        """
+        Replace function with behavior-relevant information. Must return dict
+        """
+        return {}
 
     def _info_init(self):
-        if self.behavior == 'self_touch':
-            self._self_touch_right_hand = []
-            self._self_touch_left_hand = []
-        elif self.behavior == 'hand_regard':
-            self._hand_regard_right_eye_right_hand = 0
-            self._hand_regard_right_eye_left_hand = 0
-            self._hand_regard_left_eye_right_hand = 0
-            self._hand_regard_left_eye_left_hand = 0
-
-    def _info_self_touch(self):
-        # Get all contacts
-        contacts = self.data.contact
-        for idx in range(len(contacts.geom1)):
-            # Check if hand in contact
-            if contacts.geom1[idx] in self.right_hand_geoms:
-                other_geom = contacts.geom2[idx]
-                # Check if other geom is in mimo's body and is new contact
-                if (other_geom in self.mimo_geoms) and (other_geom not in self._self_touch_right_hand):
-                    # Add to list of contacts
-                    self._self_touch_right_hand.append(int(other_geom))
-            elif contacts.geom2[idx] in self.right_hand_geoms:
-                other_geom = contacts.geom1[idx]
-                if (other_geom in self.mimo_geoms) and (other_geom not in self._self_touch_right_hand):
-                    self._self_touch_right_hand.append(int(other_geom))
-            elif contacts.geom1[idx] in self.left_hand_geoms:
-                other_geom = contacts.geom2[idx]
-                if (other_geom in self.mimo_geoms) and (other_geom not in self._self_touch_left_hand):
-                    self._self_touch_left_hand.append(int(other_geom))
-            elif contacts.geom2[idx] in self.left_hand_geoms:
-                other_geom = contacts.geom1[idx]
-                if (other_geom in self.mimo_geoms) and (other_geom not in self._self_touch_left_hand):
-                    self._self_touch_left_hand.append(int(other_geom))
-        return {'right_hand_touches': self._self_touch_right_hand,
-                'left_hand_touches': self._self_touch_left_hand}
-
-    def _info_hand_regard(self):
-        # Get positions of hands and eyes
-        right_hand_pos = self.data.body('right_hand').xpos
-        left_hand_pos = self.data.body('left_hand').xpos
-        right_eye_pos = self.data.body('right_eye').xpos
-        left_eye_pos = self.data.body('left_eye').xpos
-        # Compute vectors from eyes to hands
-        right_eye_to_right_hand = right_hand_pos - right_eye_pos
-        right_eye_to_left_hand = left_hand_pos - right_eye_pos
-        left_eye_to_right_hand = right_hand_pos - left_eye_pos
-        left_eye_to_left_hand = left_hand_pos - left_eye_pos
-        # Get rotation matrices of eyes
-        right_eye_rot = self.data.body('right_eye').xmat.reshape(3, 3)
-        left_eye_rot = self.data.body('left_eye').xmat.reshape(3, 3)
-        # Camera forward direction is the negative z-axis in the eye's local frame
-        right_eye_forward = -right_eye_rot[:, 2]
-        left_eye_forward = -left_eye_rot[:, 2]
-        # Compute angles between eye forward directions and eyes-to-hands vectors
-        right_eye_right_hand_angle = self._angle_between_vectors(right_eye_forward, right_eye_to_right_hand)
-        right_eye_left_hand_angle = self._angle_between_vectors(right_eye_forward, right_eye_to_left_hand)
-        left_eye_right_hand_angle = self._angle_between_vectors(left_eye_forward, left_eye_to_right_hand)
-        left_eye_left_hand_angle = self._angle_between_vectors(left_eye_forward, left_eye_to_left_hand)
-        # Field of view of eye cameras
-        fovy = 30.0
-        # Add to hand regard times
-        self._hand_regard_right_eye_right_hand += int(right_eye_right_hand_angle < fovy/2)
-        self._hand_regard_right_eye_left_hand += int(right_eye_left_hand_angle < fovy/2)
-        self._hand_regard_left_eye_right_hand += int(left_eye_right_hand_angle < fovy/2)
-        self._hand_regard_left_eye_left_hand += int(left_eye_left_hand_angle < fovy/2)
-        return {'right_eye_right_hand': self._hand_regard_right_eye_right_hand,
-                'right_eye_left_hand': self._hand_regard_right_eye_left_hand,
-                'left_eye_right_hand': self._hand_regard_left_eye_right_hand,
-                'left_eye_left_hand': self._hand_regard_left_eye_left_hand}
-
-    def _angle_between_vectors(self, v1, v2):
-        v1_unit = v1 / np.linalg.norm(v1)
-        v2_unit = v2 / np.linalg.norm(v2)
-        dot_product = np.clip(np.dot(v1_unit, v2_unit), -1.0, 1.0)
-        angle = np.arccos(dot_product)
-        return np.degrees(angle)
-
-    def _angle_between_vector_and_rotation(self, vector, rotation_matrix):
-        # Normalize the vector
-        vector = vector / np.linalg.norm(vector)
-        # The forward direction is the third column of the rotation matrix
-        forward_direction = rotation_matrix[:, 2]
-        # Compute the dot product
-        dot_product = np.dot(vector, forward_direction)
-        # Clamp the dot product to [-1, 1] to avoid numerical errors
-        dot_product = np.clip(dot_product, -1.0, 1.0)
-        # Compute the angle in radians
-        angle = np.arccos(dot_product)
-        # Convert to degrees
-        angle_degrees = np.degrees(angle)
-        return angle_degrees
+        """
+        Replace function with behavior-relevant information functions.
+        """
+        pass
 
     def is_success(self, achieved_goal, desired_goal):
         """ Dummy function. Always returns ``False``.

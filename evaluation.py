@@ -15,61 +15,62 @@ import mimoEnv
 from mimoEnv.envs.mimo_env import MIMoEnv
 import mimoEnv.utils as env_utils
 import babybench.utils as bb_utils
-
-
-def visualize(env, save_dir, render_video=False, test_for=1000):
-    obs, _ = env.reset()
-    images = []
-    im_counter = 0
-
-    for idx in range(test_for):
-
-        action = env.action_space.sample()
-
-        # ---------------------------------------------------# 
-        #                                                    #
-        # TODO REPLACE WITH CALL TO YOUR TRAINED POLICY HERE #
-        # action = policy(obs)                               #
-        #                                                    #
-        # ---------------------------------------------------#
-
-        obs, rew, done, trunc, info = env.step(action)
-        
-        if render_video:
-            images.append(bb_utils.evaluation_img(env))
-        
-        if done or trunc:
-            time.sleep(1)
-            obs, _ = env.reset()
-            
-            if render_video:
-                bb_utils.evaluation_video(
-                    images,
-                    os.path.join(save_dir, f'episode_{im_counter}.avi'))
-                images = []
-                im_counter += 1
+import babybench.eval as bb_eval
 
 def main():
     
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', default='config.yml', type=str,
                         help='The configuration file to set up environment variables')
-    parser.add_argument('--save_dir', default='results/', type=str,
-                        help='Directory to save results')
-    parser.add_argument('--render_video', default=True, type=bool,
-                        help='Renders a video for each episode during the test run')
-    
+    parser.add_argument('--render', default=True,  type=bool,
+                        help='Renders a video for each episode during the evaluation.')
+    parser.add_argument('--duration', default=1000, type=int,
+                        help='Total timesteps per evaluation episode')
+    parser.add_argument('--episodes', default=1, type=int,
+                        help='Number of evaluation episode')
     args = parser.parse_args()
-    
+    duration = args.duration
+    episodes = args.episodes
+    render = args.render
+
     with open(args.config) as f:
         config = yaml.safe_load(f)
 
-    env = bb_utils.make_env(config)
+    env = bb_utils.make_env(config, training=False)
     env.reset()
 
-    visualize(env, args.save_dir, render_video=args.render_video)
-    
+    # Initialize evaluation object
+    evaluation = bb_eval.EVALS[config['behavior']](
+        env=env,
+        duration=duration,
+        render=render,
+        save_dir=config['save_dir'],
+    )
 
+    for ep_idx in range(episodes):
+
+        # Reset environment in random initial state
+        obs, _ = env.reset()
+
+        for t_idx in range(duration):
+
+            # Select action
+            action = env.action_space.sample()
+
+            # ---------------------------------------------------# 
+            #                                                    #
+            # TODO REPLACE WITH CALL TO YOUR TRAINED POLICY HERE #
+            # action = policy(obs)                               #
+            #                                                    #
+            # ---------------------------------------------------#
+
+            # Perform step in simulation
+            obs, _, _, _, info = env.step(action)
+
+            # Perform evaluations of step
+            evaluation.step(info)
+            
+        evaluation.end(episode=ep_idx)
 
 if __name__ == '__main__':
     main()

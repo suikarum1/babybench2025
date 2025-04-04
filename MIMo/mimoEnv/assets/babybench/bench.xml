@@ -1,0 +1,23 @@
+<mujocoinclude>
+    <asset>
+	    <texture name="texbench" type="2d" builtin="checker" width="100" height="100" rgb1=".87 .72 .53" rgb2=".87 .72 .53" mark="edge" markrgb=".25 .17 .7"/>
+        <material name="matbench" texture="texbench" texrepeat="100 100"/>
+    </asset>
+	
+    <worldbody>
+	    <body name="bench" pos="0 0 0">
+        <freejoint/>
+            <geom type="box" material="matbench" size="0.01 0.05 0.25" pos="0 0.145 .4" euler="75 90 0"/>
+            <geom type="box" material="matbench" size="0.01 0.05 0.25" pos="0 0.1 .275" euler="75 90 0"/>
+            <geom type="box" material="matbench" size="0.25 0.1 0.01" pos="0 0.05 0.175" euler="0 0 0"/>  
+            <geom type="box" material="matbench" size="0.02 0.02 0.14" pos="-0.15 0.14 .3" euler="-15 0 0"/>
+            <geom type="box" material="matbench" size="0.02 0.02 0.14" pos=".15   0.14 .3" euler="-15 0 0"/>
+            <geom type="box" material="matbench" size="0.02 0.025 0.09" pos="-.15 -0.04 .09" euler="-15 0 0"/>
+            <geom type="box" material="matbench" size="0.02 0.025 0.09" pos=".15  -0.04 .09" euler="-15 0 0"/>
+            <geom type="box" material="matbench" size="0.02 0.025 0.09" pos="-.15 0.14 .09" euler="15 0 0"/>
+            <geom type="box" material="matbench" size="0.02 0.025 0.09" pos=".15  0.14 .09" euler="15 0 0"/>
+            <geom type="box" material="matbench" size="0.015 0.03 0.075" pos="-.15  0.05 .135" euler="90 0 0"/>
+            <geom type="box" material="matbench" size="0.015 0.03 0.075" pos=".15  0.05 .135" euler="90 0 0"/>
+        </body>
+    </worldbody>
+</mujocoinclude>

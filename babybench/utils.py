@@ -6,60 +6,34 @@ import cv2
 import yaml
 
 ENVS = {
-    'base': 'BabyBench-Base-v0',
-    'crib': 'BabyBench-Crib-v0',
-    'mirror': 'BabyBench-Crib-v0',
+    'self_touch': 'BabyBench-SelfTouch',
+    'hand_regard': 'BabyBench-HandRegard',
+    'mirror': 'BabyBench-Mirror',
 }
 
-def make_env(config=None):
+def make_env(config=None, training=True):
+    make_save_dirs(config['save_dir'])
     env = gym.make(
-        ENVS[config['environment']],
+        ENVS[config['behavior']],
         actuation_model=config['actuation_model'],
         max_episode_steps=config['max_episode_steps'],
-        behavior=config['behavior'],
-        width=config['render_width'],
-        height=config['render_height'],
-        proprio_velocity=config['proprio_velocity'],
-        proprio_torque=config['proprio_torque'],
-        proprio_limits=config['proprio_limits'],
-        proprio_actuation=config['proprio_actuation'],
-        vestibular_active=config['vestibular_active'],
-        vision_active=config['vision_active'],
-        vision_resolution=config['vision_resolution'],
-        touch_active=config['touch_active'],
-        touch_scale=config['touch_scale'],
-        touch_function=config['touch_function'],
-        touch_response_function=config['touch_response_function'],
-        touch_left_toes=config['touch_left_toes'],
-        touch_right_toes=config['touch_right_toes'],
-        touch_left_foot=config['touch_left_foot'],
-        touch_right_foot=config['touch_right_foot'],
-        touch_left_lower_leg=config['touch_left_lower_leg'],
-        touch_right_lower_leg=config['touch_right_lower_leg'],
-        touch_left_upper_leg=config['touch_left_upper_leg'],
-        touch_right_upper_leg=config['touch_right_upper_leg'],
-        touch_hip=config['touch_hip'],
-        touch_lower_body=config['touch_lower_body'],
-        touch_upper_body=config['touch_upper_body'],
-        touch_head=config['touch_head'],
-        touch_left_eye=config['touch_left_eye'],
-        touch_right_eye=config['touch_right_eye'],
-        touch_left_upper_arm=config['touch_left_upper_arm'],
-        touch_right_upper_arm=config['touch_right_upper_arm'],
-        touch_left_lower_arm=config['touch_left_lower_arm'],
-        touch_right_lower_arm=config['touch_right_lower_arm'],
-        touch_left_hand=config['touch_left_hand'],
-        touch_right_hand=config['touch_right_hand'],
-        touch_left_fingers=config['touch_left_fingers'],
-        touch_right_fingers=config['touch_right_fingers'],
+        frame_skip=config['frame_skip'],
+        width=config['render_size'],
+        height=config['render_size'],
+        config=config,
+        training=training,
     )
     return env
 
+def render(env, camera="corner"):
+    img = env.mujoco_renderer.render(render_mode="rgb_array", camera_name=camera)
+    return img.astype(np.uint8)
+
 def evaluation_img(env):
-    img_corner = env.mujoco_renderer.render(render_mode="rgb_array", camera_name="corner")
-    img_top = env.mujoco_renderer.render(render_mode="rgb_array", camera_name="top")
-    img_left_eye = env.mujoco_renderer.render(render_mode="rgb_array", camera_name="eye_left")
-    img_right_eye = env.mujoco_renderer.render(render_mode="rgb_array", camera_name="eye_right")
+    img_corner = render(env, "corner")
+    img_top = render(env, "top")
+    img_left_eye = render(env, "eye_left")
+    img_right_eye = render(env, "eye_right")
     img = np.zeros((480,720,3))
     img[:,:480,:] = img_corner
     img[240:,480:,:] = img_top[::2,::2,:]
@@ -68,9 +42,9 @@ def evaluation_img(env):
     img[:240,480:,2] = to_grayscale(img_right_eye[::2,::2,:])
     return img.astype(np.uint8)
 
-def evaluation_video(images, save_name=None):
+def evaluation_video(images, save_name=None, frame_rate=60, resolution=((720,480))):
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    video = cv2.VideoWriter(save_name, fourcc, 60, (720, 480))
+    video = cv2.VideoWriter(save_name, fourcc, frame_rate, resolution)
     for img in images:
         video.write(cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
     cv2.destroyAllWindows()
@@ -78,6 +52,12 @@ def evaluation_video(images, save_name=None):
 
 def to_grayscale(x):
     return 0.2989*x[:,:,0] + 0.5870*x[:,:,1] + 0.1140*x[:,:,2]
+
+def make_save_dirs(save_dir):
+    make_dir(save_dir)
+    dirs = ['logs','trajectories','videos']
+    for dir_name in dirs:
+        make_dir(f'{save_dir}/{dir_name}')
 
 def make_dir(dir_name):
     if not os.path.exists(dir_name):

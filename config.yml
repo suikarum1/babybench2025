@@ -1,14 +1,17 @@
+# Configuration file for running BabyBench experiments.
+# See wiki for details: https://babybench.github.io/2025/wiki
+
 # --- General options --- #
 
-environment : crib  # base, crib, mirror
-behavior : self_touch   # self_touch, hand_rehard, mirror
-actuation_model : spring_damper  # spring_damper, muscle, positional
+save_dir : results/self_touch
+behavior : self_touch   # options: self_touch, hand_regard, mirror
+
+# --- Experiment parameters --- #
+
 max_episode_steps : 1000
-
-# --- Rendering options --- #
-render_width : 480
-render_height : 480
-
+frame_skip : 1
+render_size : 480
+save_logs_every: 100
 
 # --- Sensory modalities --- #
 
@@ -22,39 +25,31 @@ proprio_actuation : True
 vestibular_active : True
 
 # Vision
-vision_active : True
+vision_active : False
 vision_resolution : 64
 
 # Touch
-touch_active : True
-touch_scale : 1.0
+touch_active : False
+touch_scale : 1.
 touch_function : force_vector
-touch_response_function : spread_linear
-touch_left_toes : True
-touch_right_toes : True
-touch_left_foot : True
-touch_right_foot : True
-touch_left_lower_leg : True
-touch_right_lower_leg : True
-touch_left_upper_leg : True
-touch_right_upper_leg : True
-touch_hip : True
-touch_lower_body : True
-touch_upper_body : True
+touch_response : spread_linear
+touch_hands : True
+touch_arms : True
+touch_feet : True
+touch_legs : True
+touch_body : True
 touch_head : True
-touch_left_eye : True
-touch_right_eye : True
-touch_left_upper_arm : True
-touch_right_upper_arm : True
-touch_left_lower_arm : True
-touch_right_lower_arm : True
-touch_left_hand : True
-touch_right_hand : True
-touch_left_fingers : True
-touch_right_fingers : True
-
+touch_eyes : False
 
 # --- Motor modalities --- #
 
-# Lock body parts
+actuation_model : spring_damper  # options: spring_damper, muscle, positional
 
+# Actuated body parts (Some joints may be locked, see descriptions in wiki)
+act_hands : True
+act_arms : True
+act_feet : True
+act_legs : True
+act_body : True
+act_head : True
+act_eyes : True

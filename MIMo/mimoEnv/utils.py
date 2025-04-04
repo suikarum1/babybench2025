@@ -5,7 +5,6 @@ from typing import List, Dict, Tuple
 
 EPS = 1e-10
 
-
 MUJOCO_JOINT_SIZES = {
     mujoco.mjtJoint.mjJNT_FREE: 7,
     mujoco.mjtJoint.mjJNT_BALL: 4,

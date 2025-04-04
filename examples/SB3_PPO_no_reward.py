@@ -28,7 +28,7 @@ def test(env, save_dir, test_for=1000, model=None, render_video=False):
     im_counter = 0
 
     for idx in range(test_for):
-        action, _ = model.predict(obs)
+        action, _ = model.predict(obs, deterministic=True)
         obs, _, done, trunc, _ = env.step(action)
         if render_video:
             images.append(bb_utils.evaluation_img(env))
@@ -54,7 +54,7 @@ def main():
                         help='Directory to save results')
     parser.add_argument('--render_video', default=True, type=bool,
                         help='Renders a video for each episode during the test run')
-    parser.add_argument('--train_for', default=10000, type=int,
+    parser.add_argument('--train_for', default=100000, type=int,
                         help='Total timesteps of training')
     args = parser.parse_args()
     
