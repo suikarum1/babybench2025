@@ -2,7 +2,7 @@
 
 	<!-- Import everything except the kinematic tree -->
     <include file="babybench/base.xml"></include>
-	<include file="mimo/MIMo_meta.xml"></include>
+	<include file="babybench/meta_v1.xml"></include>
 
     <worldbody>
         <!-- The location and orientation of the base model can be set using this body -->

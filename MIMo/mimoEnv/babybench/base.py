@@ -150,6 +150,69 @@ TOUCH_PARAMS_V2 = {
 :meta hide-value:
 """
 
+BODY_GROUPS = {
+    "left_big_toe": "feet",
+    "right_big_toe": "feet",
+    "left_toes": "feet",
+    "right_toes": "feet",
+    "left_foot": "feet",
+    "right_foot": "feet",
+    "left_lower_leg": "legs",
+    "right_lower_leg": "legs",
+    "left_upper_leg": "legs",
+    "right_upper_leg": "legs",
+    "hip": "body",
+    "lower_body": "body",
+    "upper_body": "body",
+    "head": "head",
+    "left_eye": "eyes",
+    "right_eye": "eyes",
+    "left_upper_arm": "arms",
+    "right_upper_arm": "arms",
+    "left_lower_arm": "arms",
+    "right_lower_arm": "arms",
+    "left_hand": "hands",
+    "right_hand": "hands",
+    "left_fingers": "fingers",
+    "right_fingers": "fingers",
+    "left_ffdistal": "fingers",
+    "left_mfdistal": "fingers",
+    "left_rfdistal": "fingers",
+    "left_lfdistal": "fingers",
+    "left_thdistal": "fingers",
+    "left_ffmiddle": "fingers",
+    "left_mfmiddle": "fingers",
+    "left_rfmiddle": "fingers",
+    "left_lfmiddle": "fingers",
+    "left_thhub": "fingers",
+    "left_ffknuckle": "fingers",
+    "left_mfknuckle": "fingers",
+    "left_rfknuckle": "fingers",
+    "left_lfknuckle": "fingers",
+    "left_thbase": "fingers",
+    "left_lfmetacarpal": "fingers",
+    "right_ffdistal": "fingers",
+    "right_mfdistal": "fingers",
+    "right_rfdistal": "fingers",
+    "right_lfdistal": "fingers",
+    "right_thdistal": "fingers",
+    "right_ffmiddle": "fingers",
+    "right_mfmiddle": "fingers",
+    "right_rfmiddle": "fingers",
+    "right_lfmiddle": "fingers",
+    "right_thhub": "fingers",
+    "right_ffknuckle": "fingers",
+    "right_mfknuckle": "fingers",
+    "right_rfknuckle": "fingers",
+    "right_lfknuckle": "fingers",
+    "right_thbase": "fingers",
+    "right_lfmetacarpal": "fingers",
+}
+""" Grouped body names for MIMo's named body parts.
+
+:meta hide-value:
+"""
+
 VISION_PARAMS = {
     "eye_left": {"width": 64, "height": 64},
     "eye_right": {"width": 64, "height": 64},
@@ -216,8 +279,11 @@ class BabyBenchEnv(MIMoEnv):
                     touch_params = None
                 else:
                     if config['touch_scale'] is not None:
-                        for body in touch_params["scales"]:
-                            touch_params["scales"][body] = TOUCH_PARAMS["scales"][body]*config['touch_scale']
+                        for body in touch_params["scales"].copy():
+                            if config[f"touch_{BODY_GROUPS[body]}"] is True:
+                                touch_params["scales"][body] = TOUCH_PARAMS["scales"][body]*config['touch_scale']
+                            else:
+                                touch_params["scales"].pop(body, None)
                     if config['touch_function'] is not None:
                         touch_params["touch_function"] = config['touch_function']
                     if config['touch_response'] is not None:
@@ -229,6 +295,12 @@ class BabyBenchEnv(MIMoEnv):
             self.save_dir = config['save_dir']
             self.save_logs_every = config['save_logs_every']
             self.training = kwargs['training']
+        else:
+            config = None
+            self.behavior = None
+            self.save_dir = None
+            self.save_logs_every = None
+            self.training = None
 
         super().__init__(model_path=model_path,
                          frame_skip=frame_skip,
@@ -242,6 +314,14 @@ class BabyBenchEnv(MIMoEnv):
                          width=width,
                          height=height,)
 
+        # Lock joints in initial position
+        if config is not None:
+            for joint_id in self.mimo_joints:
+                joint_name = self.model.joint(joint_id).name
+                body_id = self.model.joint(joint_id).bodyid
+                body_name = self.model.body(body_id).name
+                if config[f"lock_{BODY_GROUPS[body_name]}"] is True:
+                    env_utils.lock_joint(self.model, joint_name)
         
         # initialize 
         self.set_state(self.init_qpos, self.init_qvel)
@@ -253,6 +333,8 @@ class BabyBenchEnv(MIMoEnv):
         self.init_qvel = self.data.qvel.copy()
         self.steps = 0
 
+        # initialize info functions
+        self._info_init()
         self._info_hist = []
                          
     def compute_reward(self, **kwargs):
@@ -295,11 +377,14 @@ class BabyBenchEnv(MIMoEnv):
         """
         Only called during training.
         """
-        self._info_hist.append(self._info())
-        if self.steps % self.save_logs_every == 0:
-            # Save info to file
-            with open(f'{self.save_dir}/logs/training.pkl', 'wb') as f:
-                pickle.dump(self._info_hist, f, -1)
+        info = self._info()
+        info['steps'] = self.steps
+        self._info_hist.append(info)
+        if (self.save_logs_every is not None) and (self.save_dir is not None):
+            if self.steps % self.save_logs_every == 0:
+                # Save info to file
+                with open(f'{self.save_dir}/logs/training.pkl', 'wb') as f:
+                    pickle.dump(self._info_hist, f, -1)
         self._info_init()
 
     def _step_callback(self):

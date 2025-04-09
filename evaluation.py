@@ -1,7 +1,3 @@
-"""
-
-"""
-
 import numpy as np
 import os
 import gymnasium as gym
@@ -47,6 +43,10 @@ def main():
         save_dir=config['save_dir'],
     )
 
+    # Preview evaluation of training log
+    score = evaluation.eval_logs()
+    print('Training score',score)
+
     for ep_idx in range(episodes):
 
         # Reset environment in random initial state
@@ -68,7 +68,7 @@ def main():
             obs, _, _, _, info = env.step(action)
 
             # Perform evaluations of step
-            evaluation.step(info)
+            evaluation.eval_step(info)
             
         evaluation.end(episode=ep_idx)
 

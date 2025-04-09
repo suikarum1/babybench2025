@@ -3,8 +3,8 @@
 
 # --- General options --- #
 
-save_dir : results/self_touch
-behavior : self_touch   # options: self_touch, hand_regard, mirror
+save_dir : results/hand_regard
+behavior : hand_regard   # options: self_touch, hand_regard, mirror
 
 # --- Experiment parameters --- #
 
@@ -25,11 +25,11 @@ proprio_actuation : True
 vestibular_active : True
 
 # Vision
-vision_active : False
+vision_active : True
 vision_resolution : 64
 
 # Touch
-touch_active : True
+touch_active : False
 touch_scale : 10.
 touch_function : force_vector
 touch_response : spread_linear

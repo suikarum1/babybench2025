@@ -1,6 +1,8 @@
 # BabyBench files and directories
 results/*
 !results/__init__.py
+test/*
+test*
 
 # MUJoCo files
 MUJOCO*

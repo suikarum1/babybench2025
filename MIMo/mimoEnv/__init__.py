@@ -8,8 +8,8 @@ register(id='BabyBench-SelfTouch',
          max_episode_steps=1000,
          )
 
-register(id='BabyBench-Mirror-v0',
-         entry_point='mimoEnv.babybench:BabyBenchMirrorEnv',
+register(id='BabyBench-HandRegard',
+         entry_point='mimoEnv.babybench:BabyBenchHandRegardEnv',
          max_episode_steps=1000,
          )
 
