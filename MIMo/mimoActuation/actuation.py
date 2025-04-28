@@ -226,7 +226,6 @@ class PositionalModel(ActuationModel):
             np.ndarray: An array with the constraint IDs.
         """
         locked_ids = []
-        print(self.env.model.equality(len(self.env.model.eq_data)-1))
         # Iterate over equalities, store joints that are locked
         for equality_id in range(len(self.env.model.eq_data)):
             if (self.env.model.equality(equality_id).type == 2) \

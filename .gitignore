@@ -3,6 +3,7 @@ results/*
 !results/__init__.py
 test/*
 test*
+babybench.sif
 
 # MUJoCo files
 MUJOCO*

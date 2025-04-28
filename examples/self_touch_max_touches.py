@@ -7,7 +7,6 @@ import os
 import gymnasium as gym
 import time
 import argparse
-import cv2
 import mujoco
 import yaml
 from stable_baselines3 import PPO

@@ -9,7 +9,7 @@ networkx
 rtree
 mujoco
 gymnasium==0.28.1
-opencv-python
+opencv-python-headless==4.11.0.86
 sphinx==4.2.0
 sphinx_rtd_theme==1.0.0
 sphinx-automodapi

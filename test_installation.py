@@ -13,7 +13,7 @@ def main():
         import gymnasium as gym
         import time
         import argparse
-        import cv2
+        #import cv2
         import mujoco
         import yaml
     except ImportError as e:

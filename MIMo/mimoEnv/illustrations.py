@@ -161,7 +161,6 @@ def main():
         model = RL.load(load_model, env)
     else:
         model = RL("MultiInputPolicy", env,
-                   tensorboard_log=os.path.join("models", "tensorboard_logs", env_name, save_model),
                    verbose=1)
 
     # train model

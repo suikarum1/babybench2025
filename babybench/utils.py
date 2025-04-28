@@ -53,7 +53,6 @@ def evaluation_video(images, save_name=None, frame_rate=60, resolution=((720,480
     video = cv2.VideoWriter(save_name, fourcc, frame_rate, resolution)
     for img in images:
         video.write(cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
-    cv2.destroyAllWindows()
     video.release()
 
 def view_binocular(env):
