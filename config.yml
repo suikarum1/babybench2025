@@ -1,13 +1,11 @@
 # Configuration file for running BabyBench environments. See wiki for details:
 # https://babybench.github.io/babybench2025/wiki/about/environments/
 
-# --- General options --- #
+# --- Mandatory options --- #
 
 save_dir : results/self_touch
-behavior : self_touch   # options: self_touch, hand_regard, mirror
-
-# --- Experiment parameters --- #
-
+behavior : self_touch   # options: self_touch, hand_regard
+actuation_model : spring_damper  # options: spring_damper, muscle, positional
 max_episode_steps : 1000
 frame_skip : 1
 render_size : 480
@@ -42,14 +40,11 @@ touch_body : True
 touch_head : True
 touch_eyes : False
 
-# --- Motor modalities --- #
-
-# Actuation model
-actuation_model : spring_damper  # options: spring_damper, muscle, positional
+# --- Motor constraints --- #
 
 # Lock joints
 lock_hands : False
-lock_fingers : True
+lock_fingers : False
 lock_arms : False
 lock_feet : False
 lock_legs : False
