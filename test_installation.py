@@ -4,7 +4,7 @@ Installation test for BabyBench. Checks required libraries, MIMo, simulations, a
 
 def main():
     
-    print("Starting BabyBench installation test", end='')
+    print("Starting BabyBench installation test")
 
     print("Checking libraries... ", end='')
     try:

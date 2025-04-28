@@ -1,5 +1,5 @@
 # Configuration file for running BabyBench environments. See wiki for details:
-# https://babybench.github.io/babybench2025/wiki/about/environments/
+# https://babybench.github.io/2025/API/
 
 # --- Mandatory options --- #
 
@@ -9,7 +9,7 @@ actuation_model : spring_damper  # options: spring_damper, muscle, positional
 max_episode_steps : 1000
 frame_skip : 1
 render_size : 480
-save_logs_every: 100
+save_logs_every: 1000
 
 # --- Sensory modalities --- #
 
@@ -23,7 +23,7 @@ proprio_actuation : True
 vestibular_active : True
 
 # Vision
-vision_active : False
+vision_active : True
 vision_resolution : 64
 
 # Touch
