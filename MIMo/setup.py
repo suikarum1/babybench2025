@@ -9,9 +9,9 @@ with open('requirements.txt') as requirements_txt:
     ]
 
 setup(
-    name='MIMo',
-    version='BabyBench-0.1',
-    url='',
+    name='MIMo-BabyBench',
+    version='0.1',
+    url='https://github.com/babybench/BabyBench',
     license='',
     author='Francisco M. López', 
     packages=['mimoEnv', 'mimoVision', 'mimoVestibular', 'mimoProprioception', 'mimoTouch', 'mimoActuation'],
