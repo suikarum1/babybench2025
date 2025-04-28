@@ -7,9 +7,7 @@ A second implementation using direct positional control is :class:`~mimoActuatio
 import numpy
 import numpy as np
 from gymnasium import spaces
-
-from mimoEnv.utils import set_joint_locking_angle
-
+import mimoEnv.utils as env_utils
 
 class ActuationModel:
     """ Abstract base class for MIMo's actuation model.
@@ -215,24 +213,29 @@ class PositionalModel(ActuationModel):
         constraints (np.ndarray): Contains an array of constraint IDs belonging to the joints in 'actuated_joints'.
     """
     def __init__(self, env, actuators):
-        super().__init__(env, actuators)
         self.control_input = None
-        self.actuated_joints = self.env.model.actuator_trnid[actuators, 0]
-        self.constraints = self.get_constraints()
+        self.actuated_joints = env.model.actuator_trnid[actuators, 0]
+        super().__init__(env, actuators)
+        self.locked_joints = self.get_locked_joints()
+        
 
-    def get_constraints(self):
-        """ Collects the constraints associated with the actuated joints in the scene.
+    def get_locked_joints(self):
+        """ Collects the ids of all locked joints within actuated joints.
 
         Returns:
             np.ndarray: An array with the constraint IDs.
         """
-        constraints = []
-        # Iterate over all constraints, check that they belong to an actuated joint and are type 'joint'
-        for i in range(self.env.model.neq):
-            if self.env.model.eq_type[i] == 2 and self.env.model.eq_obj1id[i] in self.actuated_joints:
-                self.env.model.eq_active[i] = True
-                constraints.append(i)
-        return numpy.asarray(constraints)
+        locked_ids = []
+        print(self.env.model.equality(len(self.env.model.eq_data)-1))
+        # Iterate over equalities, store joints that are locked
+        for equality_id in range(len(self.env.model.eq_data)):
+            if (self.env.model.equality(equality_id).type == 2) \
+            and (self.env.model.equality(equality_id).active0[0] == 1):
+                locked_ids.append(self.env.model.equality(equality_id).obj1id)
+                locked_ids.append(self.env.model.equality(equality_id).obj2id)
+        locked_ids = np.unique(locked_ids)
+        locked_joints = np.intersect1d(locked_ids, self.actuated_joints)
+        return locked_joints
 
     def get_action_space(self):
         """ Determines the actuation space attribute for the gym environment.
@@ -256,8 +259,20 @@ class PositionalModel(ActuationModel):
         Args:
             action (numpy.ndarray): A numpy array with desired joint positions.
         """
+        if (action is None) or (np.sum(np.abs(action)) == 0):
+            pass
         self.control_input = np.clip(action, self.action_space.low, self.action_space.high)
-        set_joint_locking_angle(self.env.model, "", angle=self.control_input, constraint_id=self.constraints)
+        for idx in range(len(self.actuated_joints)):
+            if self.actuated_joints[idx] in self.locked_joints:
+                continue
+            env_utils.set_joint_qpos(self.env.model, self.env.data, self.actuated_joints[idx], self.control_input[idx])
+
+    def substep_update(self):
+        """ Like action, but called on every physics step instead of every environment step.
+
+        This allows for torques to be updated every physics step.
+        """
+        self.action(np.zeros(self.action_space.shape))
 
     def observations(self):
         """ Returns the current control input, i.e. the locked positions.

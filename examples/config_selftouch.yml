@@ -3,8 +3,8 @@
 
 # --- General options --- #
 
-save_dir : results/self_touch2
-behavior : self_touch   # options: self_touch, hand_regard, mirror
+save_dir : results/self_touch
+behavior : self_touch   # options: self_touch, hand_regard
 
 # --- Experiment parameters --- #
 
@@ -30,7 +30,7 @@ vision_resolution : 64
 
 # Touch
 touch_active : True
-touch_scale : 10.
+touch_scale : 2.
 touch_function : force_vector
 touch_response : spread_linear
 touch_hands : True
@@ -45,14 +45,14 @@ touch_eyes : False
 # --- Motor modalities --- #
 
 # Actuation model
-actuation_model : spring_damper  # options: spring_damper, muscle, positional
+actuation_model : muscle  # options: spring_damper, muscle, positional
 
 # Lock joints
 lock_hands : False
-lock_fingers : True
+lock_fingers : False
 lock_arms : False
-lock_feet : True
+lock_feet : False
 lock_legs : False
 lock_body : False
-lock_head : False
+lock_head : True
 lock_eyes : True

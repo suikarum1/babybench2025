@@ -1,5 +1,5 @@
-
-""" Example: Stable-baselines3 PPO with no reward
+"""
+Example: Random policy for hand-regard baseline
 """
 import numpy as np
 import os
@@ -9,7 +9,6 @@ import argparse
 import cv2
 import mujoco
 import yaml
-from stable_baselines3 import PPO
 
 import mimoEnv
 from mimoEnv.envs.mimo_env import MIMoEnv
@@ -24,7 +23,7 @@ import babybench.utils as bb_utils
 def main():
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config', default='config_selftouch.yml', type=str,
+    parser.add_argument('--config', default='config_handregard.yml', type=str,
                         help='The configuration file to set up environment variables')
     parser.add_argument('--train_for', default=10000, type=int,
                         help='Total timesteps of training')
@@ -36,11 +35,18 @@ def main():
     env = bb_utils.make_env(config)
     env.reset()
     
-    model = PPO("MultiInputPolicy", env, verbose=1)
+    steps = 0
+    obs, _ = env.reset()
+    while steps < args.train_for:
+        step += 1
+        action = env.action_space.sample()  # Random action
+        obs, reward, terminated, truncated, info = env.step(action)
+        done = terminated or truncated
 
-    # train model
-    model.learn(total_timesteps=args.train_for)
-    model.save(os.path.join(config["save_dir"], "model"))
+        if done:
+            obs,_ = env.reset()
+
+    env.close()
 
 if __name__ == '__main__':
     main()

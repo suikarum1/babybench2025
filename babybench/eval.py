@@ -18,8 +18,11 @@ class Eval():
             with open(f'{self._save_dir}/logs/training.pkl', 'rb') as f:
                 logs = pickle.load(f)
         except:
-            raise TypeError(f'Training logs not found -- make sure to use the correct save_dir in the config')
-        return self._eval_logs(logs)
+            print(f'Training logs not found -- make sure to use the correct save_dir in the config')
+            return None
+        score = self._eval_logs(logs)
+        print(f'Training score: {score}')
+        return None
 
     def _init_track(self):
         self._trajectories = {}
@@ -33,13 +36,13 @@ class Eval():
                 'mat' : self._env.data.body(body).xmat,
             }
 
-    def render_image(self):
+    def _render_image(self):
         self._images.append(bb_utils.evaluation_img(self._env))
 
     def eval_step(self, info):
         self.track(info)
         if self._render:
-            self.render_image()
+            self._render_image()
 
     def end(self, episode=0):
         # Store trajectories for submission
@@ -59,8 +62,8 @@ class EvalSelfTouch(Eval):
 
     def _eval_logs(self, logs):
         # Count total unique touches for left and right hands
-        # during last 1000 episodes logged
-        n_episodes = min(1001, len(logs))
+        # during last 10000 episodes logged
+        n_episodes = min(10001, len(logs))
         right_touches = np.array([])
         left_touches = np.array([])
         for ep in range(1,n_episodes):
@@ -71,6 +74,9 @@ class EvalSelfTouch(Eval):
         # maximum of 34 geoms touched per hand
         score = (len(right_touches) + len(left_touches)) / (34*2)
         return score
+
+    def _render_image(self):
+        self._images.append(bb_utils.evaluation_img(self._env, format='touches_with_hands'))
 
 class EvalHandRegard(Eval):
 
@@ -83,7 +89,7 @@ class EvalHandRegard(Eval):
     def _eval_logs(self, logs):
         # Average time looking at hands
         # during last 1000 episodes logged
-        n_episodes = min(1001, len(logs))
+        n_episodes = min(10001, len(logs))
         hand_in_view = 0
         steps = 0
         for ep in range(1,n_episodes):

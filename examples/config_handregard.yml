@@ -4,7 +4,7 @@
 # --- General options --- #
 
 save_dir : results/hand_regard
-behavior : hand_regard   # options: self_touch, hand_regard, mirror
+behavior : hand_regard   # options: self_touch, hand_regard
 
 # --- Experiment parameters --- #
 
@@ -22,7 +22,7 @@ proprio_limits : True
 proprio_actuation : True
 
 # Vestibular
-vestibular_active : True
+vestibular_active : False
 
 # Vision
 vision_active : True
@@ -45,14 +45,14 @@ touch_eyes : False
 # --- Motor modalities --- #
 
 # Actuation model
-actuation_model : spring_damper  # options: spring_damper, muscle, positional
+actuation_model : positional  # options: spring_damper, muscle, positional
 
 # Lock joints
 lock_hands : False
 lock_fingers : True
 lock_arms : False
-lock_feet : False
-lock_legs : False
-lock_body : False
+lock_feet : True
+lock_legs : True
+lock_body : True
 lock_head : False
-lock_eyes : False
+lock_eyes : True

@@ -1,8 +1,8 @@
 # BabyBench 2025 Competition Starter Kit
 
-BabyBench is a benchmark for intrinsic motivations and open-ended learning in developmental artificial ingelligence. The objective is to teach typical behavioral milestones to [MIMo](https://github.com/trieschlab/MIMo), a multimodal infant model. We provide the embodiment, the simulation environments, and the evaluation metrics; all you need is to implement your ideas.
+BabyBench is a multimodal benchmark for intrinsic motivations and open-ended learning in developmental artificial ingelligence. The objective is to teach typical behavioral milestones to [MIMo](https://github.com/trieschlab/MIMo), a multimodal infant model. We provide the embodiment, the simulation environments, and the evaluation metrics; all you need is to implement your ideas.
 
-We are holding the first **BabyBench Competition at the *IEEE* ICDL 2025 Conference** in Prague! The topic of this first edition is *the emergence of the self*. Can you train MIMo to develop **self-touch**, **hand regard**, or **mirror recognition**? Make your submission and know more about the competition [here](https://babybench.github.io/BabyBench2025).
+The first **BabyBench Competition** will take place at the ***IEEE* ICDL 2025 Conference** in Prague! The topic of this first edition will be *how infants discover their own bodies*. Can you help MIMo learn two typical infant behaviors: **self touch** and **hand regard**?  Make your submission and know more about the competition [here](https://babybench.github.io/2025).
 
 ## Index
 
@@ -26,8 +26,8 @@ Pre-requisites: [Python](https://www.python.org/), [Git](https://git-scm.com/), 
 2. Clone this repository: 
    
    ```
-   git clone https://github.com/babybench/BabyBench2025.git
-   cd BabyBench
+   git clone https://github.com/babybench/BabyBench2025_Starter_Kit.git
+   cd BabyBench2025_Starter_Kit
    ```
 
 3. Install requirements:
@@ -50,48 +50,46 @@ All done! You are ready to start using BabyBench.
    python test_installation.py
    ```
 
-This will run a test to check that the everything is correctly installed. If you encounter any issues, visit the [troubleshooting page](https://babybench.github.io/BabyBench2025/wiki/troubleshooting)
+This will run a test to check that the everything is correctly installed. If you encounter any issues, visit the [troubleshooting page](https://babybench.github.io/2025/troubleshooting)
 
 ## Train MIMo
 
-The aim for BabyBench is to get MIMo to learn one or more of the [target behaviors](https://babybench.github.io/BabyBench2025/wiki/environments) without any external supervision, i.e. without extrinsic rewards. Your goal is to train a policy that matches sensory observation (proprioception, vision, touch) to actions. To do so, we provide some [environments](https://babybench.github.io/BabyBench2025/wiki/environments). To change the configuration, simply change the values of `config.yml`.
+The aim for BabyBench is to get MIMo to learn the [target behaviors](https://babybench.github.io/2025/about) without any external supervision, i.e. without extrinsic rewards. Your goal is to train a policy that matches sensory observation (proprioception, vision, touch) to actions. To do so, we provide an [API](https://babybench.github.io/2025/API) to initialize and interact with the environments.
 
-If you are not sure where to begin, we recommend having a look at the `examples` directory and [this wiki page](https://babybench.github.io/BabyBench2025/wiki/examples).
+If you are not sure where to begin, we recommend having a look at the `examples` directory and [this wiki page](https://babybench.github.io/2025/start).
 
 ## Make your submission
 
-Submissions must be made through the [ICDL 2025 BabyBench Competition website](https://babybench.github.io/BabyBench2025). The topic of this first BabyBench competition is *the emergence of the self*. There are three target behaviors: **self-touch**, **hand regard**, and **mirror recognition**. 
+Submissions must be made through [PaperPlaza](https://ras.papercept.net/). The topic of this first BabyBench competition is *how infants discover their own bodies*. There are two target behaviors: **self-touch** and **hand regard**.
 
 First-round submission should consist of:
 
 * A 2-page abstract explaining your method,
 
-* The videos and logs generated during training,
+* The logs generated during training and testing,
 
 * The training code (*optional, only required to verify the winner of the competition*).
 
 ## How to...?
 
-For further information, check our [Wiki](https://github.com/babybench/BabyBench2025/wiki).  
+For further information, check our [Wiki](https://github.com/babybench/2025).  
 In particular, if you want to know more about:
 
-- the training environments, see [here](https://babybench.github.io/BabyBench2025/wiki/environments)
-- the target behaviors, see [here](https://babybench.github.io/BabyBench2025/wiki/BabyBench2025/behaviors)
-- examples, see [here](https://babybench.github.io/BabyBench2025/wiki/examples)
-- how to generate the submission files, see [here](https://babybench.github.io/BabyBench2025/wiki/submission)
-- the evaluation process, see [here](https://babybench.github.io/BabyBench2025/wiki/evaluation)
-- resources about intrinsic motivations and open-ended learning, see [here](https://babybench.github.io/BabyBench2025/wiki/resources)
+- the training environments, see [here](https://babybench.github.io/2025/API)
+- the target behaviors, see [here](https://babybench.github.io/2025/about)
+- examples, see [here](https://babybench.github.io/2025/start)
+- how to generate the submission files, see [here](https://babybench.github.io/2025/submission)
+- the evaluation process, see [here](https://babybench.github.io/2025/competition)
+- resources about intrinsic motivations and open-ended learning, see [here](https://babybench.github.io/2025/start)
 
-... or see the [FAQ](https://babybench.github.io/BabyBench2025/wiki/faq) for common questions or errors.
+... or see the [FAQ](https://babybench.github.io/2025/faq) for common questions or errors.
 
 ## Support
 
-Feel free to contact us for any questions about BabyBench. You can post an issue [here](https://github.com/babybench/BabyBench2025/issues) on Github or [contact the organizers via mail](mailto:fcomlop@gmail.com?subject=[BabyBench]%20Question).
+Feel free to contact us for any questions about BabyBench. You can post an issue [here](https://github.com/babybench/BabyBench2025_Starter_Kit/issues) on Github or [contact the organizers via mail](mailto:fcomlop@gmail.com?subject=[BabyBench]%20Question).
 
-We highly encourage you to collaborate with other participants! You can submit your problems, questions or ideas in the [discussion forum](https://github.com/babybench/BabyBench2025/discussions).   
-
-## Acknowledgements
+We highly encourage you to collaborate with other participants! You can submit your problems, questions or ideas in the [discussion forum](https://github.com/babybench/BabyBench2025_Starter_Kit/discussions).   
 
 ## License
 
-This project is licensed under an MIT License - see [LICENSE](https://github.com/babybench/BabyBench2025/LICENSE) for details
+This project is licensed under an MIT License - see [LICENSE](https://github.com/babybench/BabyBench2025_Starter_Kit/LICENSE) for details

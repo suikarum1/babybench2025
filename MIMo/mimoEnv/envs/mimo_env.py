@@ -345,6 +345,9 @@ class MIMoEnv(MujocoEnv, utils.EzPickle):
                          camera_name=camera_name,
                          default_camera_config=default_camera_config)
 
+        # Perform one step to initialize everything:
+        self._single_mujoco_step()
+        self._set_initial_position(self._initial_qpos)
         self._env_setup()
 
         self.goal = self.sample_goal()
@@ -407,6 +410,7 @@ class MIMoEnv(MujocoEnv, utils.EzPickle):
 
         By default, the actuation space contains only MIMos actuators.
         """
+        
         self.action_space = self.actuation_model.get_action_space()
 
     def _set_observation_space(self):
@@ -545,10 +549,12 @@ class MIMoEnv(MujocoEnv, utils.EzPickle):
             n_frames (int): The number of physics steps to perform.
         """
         self._set_action(action)
-        for _ in range(n_frames):
+        self._single_mujoco_step()
+        self._substep_callback()
+        for _ in range(n_frames-1):
             self.actuation_model.substep_update()
             self._single_mujoco_step()
-            self._substep_callback()
+            self._substep_callback()            
 
     def step(self, action):
         """ Run one timestep of the environment's dynamics.

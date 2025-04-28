@@ -4,12 +4,12 @@
 # --- General options --- #
 
 save_dir : results/self_touch
-behavior : self_touch   # options: self_touch, hand_regard, mirror
+behavior : self_touch   # options: self_touch, hand_regard
 
 # --- Experiment parameters --- #
 
 max_episode_steps : 1000
-frame_skip : 1
+frame_skip : 5
 render_size : 480
 save_logs_every: 100
 
@@ -22,7 +22,7 @@ proprio_limits : True
 proprio_actuation : True
 
 # Vestibular
-vestibular_active : True
+vestibular_active : False
 
 # Vision
 vision_active : False
@@ -30,7 +30,7 @@ vision_resolution : 64
 
 # Touch
 touch_active : True
-touch_scale : 1.
+touch_scale : 5.
 touch_function : force_vector
 touch_response : spread_linear
 touch_hands : True
@@ -45,14 +45,14 @@ touch_eyes : False
 # --- Motor modalities --- #
 
 # Actuation model
-actuation_model : spring_damper  # options: spring_damper, muscle, positional
+actuation_model : positional  # options: spring_damper, muscle, positional
 
 # Lock joints
 lock_hands : False
-lock_fingers : True
+lock_fingers : False
 lock_arms : False
 lock_feet : False
 lock_legs : False
 lock_body : False
-lock_head : False
-lock_eyes : False
+lock_head : True
+lock_eyes : True

@@ -10,12 +10,12 @@ with open('requirements.txt') as requirements_txt:
 
 setup(
     name='MIMo',
-    version='1.1.0',
+    version='BabyBench-0.1',
     url='',
     license='',
-    author='Dominik Mattern, Francisco M. López, Pierre Schumacher',
+    author='Francisco M. López', 
     packages=['mimoEnv', 'mimoVision', 'mimoVestibular', 'mimoProprioception', 'mimoTouch', 'mimoActuation'],
     install_requires=install_requires,
-    author_email='domattee@yahoo.de',
-    description='MIMo library'
+    author_email='fcomlop@gmail.com',
+    description='MIMo library for BabyBench'
 )

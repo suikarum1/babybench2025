@@ -22,13 +22,10 @@ def main():
                         help='Renders a video for each episode during the evaluation.')
     parser.add_argument('--duration', default=1000, type=int,
                         help='Total timesteps per evaluation episode')
-    parser.add_argument('--episodes', default=1, type=int,
+    parser.add_argument('--episodes', default=10, type=int,
                         help='Number of evaluation episode')
     args = parser.parse_args()
-    duration = args.duration
-    episodes = args.episodes
-    render = args.render
-
+    
     with open(args.config) as f:
         config = yaml.safe_load(f)
 
@@ -38,21 +35,20 @@ def main():
     # Initialize evaluation object
     evaluation = bb_eval.EVALS[config['behavior']](
         env=env,
-        duration=duration,
-        render=render,
+        duration=args.duration,
+        render=args.render,
         save_dir=config['save_dir'],
     )
 
     # Preview evaluation of training log
-    score = evaluation.eval_logs()
-    print('Training score',score)
+    evaluation.eval_logs()
 
-    for ep_idx in range(episodes):
+    for ep_idx in range(args.episodes):
 
         # Reset environment in random initial state
         obs, _ = env.reset()
 
-        for t_idx in range(duration):
+        for t_idx in range(args.duration):
 
             # Select action
             action = env.action_space.sample()

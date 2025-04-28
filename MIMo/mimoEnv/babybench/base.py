@@ -323,6 +323,10 @@ class BabyBenchEnv(MIMoEnv):
                 if config[f"lock_{BODY_GROUPS[body_name]}"] is True:
                     env_utils.lock_joint(self.model, joint_name)
         
+            # Update locked joints for positional actuation model
+            if isinstance(self.actuation_model, PositionalModel):
+                self.actuation_model.locked_joints = self.actuation_model.get_locked_joints()
+        
         # initialize 
         self.set_state(self.init_qpos, self.init_qvel)
         # perform 100 steps with no action to stabilize initial position
