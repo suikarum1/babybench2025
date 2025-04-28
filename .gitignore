@@ -4,6 +4,7 @@ results/*
 test/*
 test*
 babybench.sif
+*.sif
 
 # MUJoCo files
 MUJOCO*

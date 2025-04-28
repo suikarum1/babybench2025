@@ -14,6 +14,8 @@ The first **BabyBench Competition** will take place at the ***IEEE* ICDL 2025 Co
 
 ## Install the software
 
+### Option 1: Local installation
+
 Pre-requisites: [Python](https://www.python.org/), [Git](https://git-scm.com/), and [Conda](https://www.anaconda.com/products/individual). All software has been tested on Ubuntu 18.04 and 24.04.  
 
 1. Create a conda environment:
@@ -50,7 +52,31 @@ All done! You are ready to start using BabyBench.
    python test_installation.py
    ```
 
-This will run a test to check that the everything is correctly installed. If you encounter any issues, visit the [troubleshooting page](https://babybench.github.io/2025/troubleshooting)
+This will run a test to check that the everything is correctly installed.
+
+### Option 2: Singularity container
+
+Pre-requisites: [Singularity](https://neuro.debian.net/install_pkg.html?p=singularity-container). All software has been tested on Ubuntu 24.04.
+
+1. Create the singularity container
+
+```
+singularity build -F babybench.sif babybench.def
+```
+
+This will create a singularity container called `babybench.sif` in the current directory.
+
+2. Launch the container
+
+```
+singularity run -c -H /home --bind "$PWD/:/home" babybench.sif
+```
+
+This will run a test to check that the everything is correctly installed.
+
+### Troubleshooting
+
+If you encounter any issues, visit the [troubleshooting page](https://babybench.github.io/2025/troubleshooting)
 
 ## Train MIMo
 
