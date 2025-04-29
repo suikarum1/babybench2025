@@ -11,7 +11,7 @@ from mimoActuation.actuation import SpringDamperModel
 import mimoEnv.utils as env_utils
 import mimoEnv.babybench.utils as bb_utils
 
-SCENE_XML = os.path.join(SCENE_DIRECTORY, "babybench_crib.xml")
+SCENE_XML = os.path.join(SCENE_DIRECTORY, "babybench.xml")
 """ Path to the scene.
 
 :meta hide-value:

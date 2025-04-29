@@ -264,14 +264,14 @@ class PositionalModel(ActuationModel):
         for idx in range(len(self.actuated_joints)):
             if self.actuated_joints[idx] in self.locked_joints:
                 continue
-            env_utils.set_joint_qpos(self.env.model, self.env.data, self.actuated_joints[idx], self.control_input[idx])
+            self.env.data.ctrl[idx] = self.control_input[idx]
 
     def substep_update(self):
         """ Like action, but called on every physics step instead of every environment step.
 
         This allows for torques to be updated every physics step.
         """
-        self.action(np.zeros(self.action_space.shape))
+        self.action(numpy.zeros_like(self.control_input))
 
     def observations(self):
         """ Returns the current control input, i.e. the locked positions.

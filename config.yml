@@ -40,7 +40,17 @@ touch_body : True
 touch_head : True
 touch_eyes : False
 
-# --- Motor constraints --- #
+# --- Motor modality --- #
+
+# Actuate joints
+act_hands : True
+act_fingers : True
+act_arms : True
+act_feet : True
+act_legs : True
+act_body : True
+act_head : True
+act_eyes : True
 
 # Lock joints
 lock_hands : False

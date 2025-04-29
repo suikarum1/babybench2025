@@ -8,20 +8,28 @@ import yaml
 from skimage.transform import resize
 import trimesh
 import mimoEnv.utils as env_utils
-
+import sys
+sys.path.append(".")
+sys.path.append("..")
+from babybench.build_xml import build
 
 ENVS = {
     'self_touch': 'BabyBench-SelfTouch',
     'hand_regard': 'BabyBench-HandRegard',
-    'mirror': 'BabyBench-Mirror',
 }
 
 EPS = 1e-6
 
 def make_env(config=None, training=True):
     make_save_dirs(config['save_dir'])
+    scene_xml = build(config, path_to_assets=os.path.abspath(
+        os.path.join(os.path.dirname(__file__), '../MIMo/mimoEnv/assets')))
+    scene_path = os.path.join(config['save_dir'],'scene.xml')
+    with open(scene_path, 'w') as f:
+        print(scene_xml, file=f)
     env = gym.make(
         ENVS[config['behavior']],
+        model_path=os.path.abspath(scene_path),
         actuation_model=config['actuation_model'],
         max_episode_steps=config['max_episode_steps'],
         frame_skip=config['frame_skip'],

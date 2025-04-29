@@ -30,7 +30,7 @@ vision_resolution : 64
 
 # Touch
 touch_active : False
-touch_scale : 10.
+touch_scale : 1.
 touch_function : force_vector
 touch_response : spread_linear
 touch_hands : True
@@ -45,11 +45,21 @@ touch_eyes : False
 # --- Motor modalities --- #
 
 # Actuation model
-actuation_model : positional  # options: spring_damper, muscle, positional
+actuation_model : spring_damper  # options: spring_damper, muscle, positional
+
+# Actuate joints
+act_hands : True
+act_fingers : False
+act_arms : True
+act_feet : False
+act_legs : False
+act_body : False
+act_head : True
+act_eyes : False
 
 # Lock joints
 lock_hands : False
-lock_fingers : True
+lock_fingers : False
 lock_arms : False
 lock_feet : True
 lock_legs : True

@@ -14,7 +14,7 @@
         <material name="matfloor" reflectance="0" shininess="0" specular="0" texrepeat="25 25" texture="texfloor"/>
         <texture name="texwall" type="2d" builtin="flat" height="100" width="100" rgb1="0.99 0.99 0.99"/>
         <material name="matwall" reflectance="0" shininess="0" specular="0" texuniform="true" texture="texwall"/>
-        <texture name="texrug" type="cube" filefront="babybench/base_rug.png" rgb1="0.6 0.6 0.6"/>
+        <texture name="texrug" type="cube" filefront="base_rug.png" rgb1="0.6 0.6 0.6"/>
         <material name="matrug" reflectance="0" shininess=".1" specular="0.5" texrepeat="50 50" texture="texrug"/>
     </asset>
     <worldbody>
