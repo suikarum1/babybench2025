@@ -37,7 +37,7 @@ class Eval():
             }
 
     def _render_image(self):
-        self._images.append(bb_utils.evaluation_img(self._env))
+        self._images.append(bb_utils.evaluation_img(self._env, up='binocular'))
 
     def eval_step(self, info):
         self.track(info)
@@ -76,7 +76,7 @@ class EvalSelfTouch(Eval):
         return score
 
     def _render_image(self):
-        self._images.append(bb_utils.evaluation_img(self._env, format='touches_with_hands'))
+        self._images.append(bb_utils.evaluation_img(self._env, up='touches_with_hands'))
 
 class EvalHandRegard(Eval):
 
