@@ -5,6 +5,7 @@
 
 save_dir : results/self_touch
 behavior : self_touch   # options: self_touch, hand_regard
+scene : cubes   # options: crib, cubes
 actuation_model : spring_damper  # options: spring_damper, muscle, positional
 max_episode_steps : 1000
 frame_skip : 1
@@ -56,7 +57,7 @@ act_eyes : True
 lock_hands : False
 lock_fingers : False
 lock_arms : False
-lock_feet : False
+lock_feet : True
 lock_legs : False
 lock_body : False
 lock_head : False

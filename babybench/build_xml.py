@@ -3,33 +3,28 @@ import sys
 sys.path.append(".")
 sys.path.append("..")
 
-POSITION = {
-    'self_touch' : 'pos="0 0 0.3"',
-    'hand_regard' : 'pos="0 0 0.0467196"',
-}
-
-ORIENTATION = {
-    'self_touch' : 'euler="0 -90 0"',
-    'hand_regard' : 'quat="0.885453 -0.000184209 -0.464728 -0.000527509"',
-}
-
 MODEL = {
     'self_touch' : 'v1',
     'hand_regard' : 'v2',
 }
 
 SCENE = {
-    'self_touch' : 'crib.xml',
-    'hand_regard' : 'cubes.xml',
+    'crib' : 'crib.xml',
+    'cubes' : 'cubes.xml',
+}
+
+POSITION = {
+    'crib' : 'pos="0 0 0.3" euler="0 -90 0"',
+    'cubes' : 'pos="0 0 0.0467196" quat="0.885453 -0.000184209 -0.464728 -0.000527509"',
 }
 
 CONSTRAINTS = {
-    'self_touch' : """
+    'crib' : """
         <equality>
             <weld body1="lower_body"/>
         </equality>
         """,
-    'hand_regard' : """
+    'cubes' : """
         <equality>
             <weld body1="mimo_location"/>
             <joint joint1="robot:hip_bend1" polycoef="0.532 0 0 0 0"/>
@@ -56,6 +51,7 @@ def build(config=None, path_to_assets='./MIMo/mimoEnv/assets/'):
 
     try:
         behavior = config['behavior']
+        scene = config['scene']
         actuation_model = config['actuation_model']
         for body_part in ['body','head','eyes','arms','legs','feet','hands','fingers']:
             config[f'act_{body_part}']
@@ -68,7 +64,7 @@ def build(config=None, path_to_assets='./MIMo/mimoEnv/assets/'):
     XML = """<mujoco model="MIMo">\n<worldbody>\n"""
 
     # Add MIMo model
-    XML += f'<body name="mimo_location" {POSITION[behavior]} {ORIENTATION[behavior]}>\n'
+    XML += f'<body name="mimo_location" {POSITION[scene]}>\n'
     XML += '<freejoint name="mimo_location"/>\n'
     XML += f'<include file="{path_to_assets}/babybench/mimo_{MODEL[behavior]}.xml"></include>\n'
 
@@ -79,7 +75,7 @@ def build(config=None, path_to_assets='./MIMo/mimoEnv/assets/'):
     XML += f'<include file="{path_to_assets}/babybench/meta_{MODEL[behavior]}.xml"></include>\n'
 
     # Add BabyBench scene
-    XML += f'<include file="{path_to_assets}/babybench/{SCENE[behavior]}"></include>\n'
+    XML += f'<include file="{path_to_assets}/babybench/{SCENE[scene]}"></include>\n'
 
     # Add active actuators
     XML += '<actuator>\n'
@@ -336,7 +332,7 @@ def build(config=None, path_to_assets='./MIMo/mimoEnv/assets/'):
     XML += '</actuator>\n'
 
     # Add constraints
-    XML += CONSTRAINTS[behavior]
+    XML += CONSTRAINTS[scene]
     
     XML += '</mujoco>'
     return XML

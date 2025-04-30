@@ -22,14 +22,14 @@ import babybench.utils as bb_utils
 def main():
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config', default='config_handregard.yml', type=str,
+    parser.add_argument('--config', default='config_selftouch.yml', type=str,
                         help='The configuration file to set up environment variables')
     parser.add_argument('--train_for', default=10000, type=int,
                         help='Total timesteps of training')
     args = parser.parse_args()
     
     with open(args.config) as f:
-            config = yaml.safe_load(f)
+        config = yaml.safe_load(f)
 
     env = bb_utils.make_env(config)
     env.reset()
@@ -37,7 +37,7 @@ def main():
     steps = 0
     obs, _ = env.reset()
     while steps < args.train_for:
-        step += 1
+        steps += 1
         action = env.action_space.sample()  # Random action
         obs, reward, terminated, truncated, info = env.step(action)
         done = terminated or truncated

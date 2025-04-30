@@ -7,8 +7,8 @@ The first **BabyBench Competition** will take place at the ***IEEE* ICDL 2025 Co
 ## Index
 
 * [Install the software](#install-the-software)
-* [Train MIMo](#train-mimo)
-* [Make your submission](#make-your-submission)
+* [Getting started](#getting-started)
+* [Prepare your submission](#prepare-your-submission)
 * [How to...?](#how-to)
 * [Support](#support)
 
@@ -16,7 +16,7 @@ The first **BabyBench Competition** will take place at the ***IEEE* ICDL 2025 Co
 
 ### Option 1: Local installation
 
-Pre-requisites: [Python](https://www.python.org/), [Git](https://git-scm.com/), and [Conda](https://www.anaconda.com/products/individual). All software has been tested on Ubuntu 18.04 and 24.04.  
+Pre-requisites: [Python](https://www.python.org/), [Git](https://git-scm.com/), and [Conda](https://www.anaconda.com/products/individual). All software has been tested on Ubuntu 18.04 and 24.04, MS Windows 10, and MacOS 11.
 
 1. Create a conda environment:
    
@@ -78,23 +78,28 @@ This will run a test to check that the everything is correctly installed.
 
 If you encounter any issues, visit the [troubleshooting page](https://babybench.github.io/2025/troubleshooting)
 
-## Train MIMo
+## Getting started
 
 The aim for BabyBench is to get MIMo to learn the [target behaviors](https://babybench.github.io/2025/about) without any external supervision, i.e. without extrinsic rewards. Your goal is to train a policy that matches sensory observation (proprioception, vision, touch) to actions. To do so, we provide an [API](https://babybench.github.io/2025/API) to initialize and interact with the environments.
 
 If you are not sure where to begin, we recommend having a look at the `examples` directory and [this wiki page](https://babybench.github.io/2025/start).
 
-## Make your submission
+## Prepare your submission
 
 Submissions must be made through [PaperPlaza](https://ras.papercept.net/). The topic of this first BabyBench competition is *how infants discover their own bodies*. There are two target behaviors: **self-touch** and **hand regard**.
 
 First-round submission should consist of:
 
-* A 2-page abstract explaining your method,
+- A 2-page extended abstract explaining your method,
 
-* The logs generated during training and testing,
+- The training log file generated during training,
 
-* The training code (*optional, only required to verify the winner of the competition*).
+- The trajectory log files generated during the evaluation,
+
+- *Optionally*, you can also submit links to the following:  
+
+   * A repository with your training code,
+   * A folder with videos of the learned behaviors rendered during the evaluation.
 
 ## How to...?
 
@@ -118,4 +123,4 @@ We highly encourage you to collaborate with other participants! You can submit y
 
 ## License
 
-This project is licensed under an MIT License - see [LICENSE](https://github.com/babybench/BabyBench2025_Starter_Kit/LICENSE) for details
+This project is licensed under an MIT License - see [LICENSE](https://github.com/babybench/BabyBench2025_Starter_Kit/blob/main/LICENSE) for details

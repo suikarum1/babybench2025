@@ -58,7 +58,6 @@ def main():
     print("OK")
 
     print("Checking environment simulation... ", end='')
-    images = []
     try:
         _ = env.step(env.action_space.sample())
     except Exception as e:
@@ -69,7 +68,10 @@ def main():
 
     print("Checking image rendering... ", end='')
     try:
-        images.append(bb_utils.evaluation_img(env))
+        images = []
+        for _ in range(100):
+            _ = env.step(env.action_space.sample())
+            images.append(bb_utils.render(env))
     except Exception as e:
         print("Error rendering environment")
         print(e)
@@ -78,8 +80,7 @@ def main():
 
     print("Checking video rendering... ", end='')
     try:
-        bb_utils.evaluation_video(images, save_name='test.avi')
-        os.remove("test.avi") 
+        bb_utils.evaluation_video(images, save_name='test_installation.avi', resolution=(480,480))
     except Exception as e:
         print("Error creating video")
         print(e)
