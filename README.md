@@ -80,9 +80,10 @@ If you encounter any issues, visit the [troubleshooting page](https://babybench.
 
 ## Getting started
 
+If you are not sure where to begin, we recommend having a look at the `examples` directory and [this wiki page](https://babybench.github.io/2025/start).
+
 The aim for BabyBench is to get MIMo to learn the [target behaviors](https://babybench.github.io/2025/about) without any external supervision, i.e. without extrinsic rewards. Your goal is to train a policy that matches sensory observation (proprioception, vision, touch) to actions. To do so, we provide an [API](https://babybench.github.io/2025/API) to initialize and interact with the environments.
 
-If you are not sure where to begin, we recommend having a look at the `examples` directory and [this wiki page](https://babybench.github.io/2025/start).
 
 ## Prepare your submission
 
