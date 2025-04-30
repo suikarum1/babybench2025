@@ -6,7 +6,7 @@ def main():
     
     print("Starting BabyBench installation test")
 
-    print("Checking libraries... ", end='')
+    print("Checking libraries... ")
     try:
         import numpy as np
         import os
@@ -20,9 +20,8 @@ def main():
         print("Please check that the necessary libraries are installed")
         print(e)
         exit(1)
-    print("OK")
 
-    print("Checking MIMo... ", end='')
+    print("Checking MIMo... ")
     try:
         import mimoEnv
         from mimoEnv.envs.mimo_env import MIMoEnv
@@ -32,22 +31,20 @@ def main():
         print("Please make sure you have MIMo installed")
         print(e)
         exit(1)
-    print("OK")
 
-    print("Checking config... ", end='')
+    print("Checking config... ")
     try:
-        with open('config.yml') as f:
+        with open('examples/config_test_installation.yml') as f:
             config = yaml.safe_load(f)
-            for param in ['save_dir','behavior','actuation_model',
+            for param in ['save_dir','behavior','scene','actuation_model',
                           'max_episode_steps','frame_skip','render_size','save_logs_every']:
-                temp = config[param]
+                _ = config[param]
     except Exception as e:
         print(f"Please make sure the necessary parameters are defined in the config. Missing: {param}")
         print(e)
         exit(1)
-    print("OK")
 
-    print("Checking environment initialization... ", end='')
+    print("Checking environment initialization... ")
     try:
         env = bb_utils.make_env(config)
         env.reset()
@@ -55,18 +52,16 @@ def main():
         print("Error creating environment")
         print(e)
         exit(1)
-    print("OK")
 
-    print("Checking environment simulation... ", end='')
+    print("Checking environment simulation... ")
     try:
         _ = env.step(env.action_space.sample())
     except Exception as e:
         print("Error taking step in environment")
         print(e)
         exit(1)
-    print("OK")
 
-    print("Checking image rendering... ", end='')
+    print("Checking image rendering... ")
     try:
         images = []
         for _ in range(100):
@@ -76,16 +71,14 @@ def main():
         print("Error rendering environment")
         print(e)
         exit(1)
-    print("OK")
 
-    print("Checking video rendering... ", end='')
+    print("Checking video rendering... ")
     try:
-        bb_utils.evaluation_video(images, save_name='test_installation.avi', resolution=(480,480))
+        bb_utils.evaluation_video(images, save_name=f'{config["save_dir"]}/videos/test_installation.avi', resolution=(480,480))
     except Exception as e:
         print("Error creating video")
         print(e)
         exit(1)
-    print("OK")
 
     print("Installation test successful!")
 

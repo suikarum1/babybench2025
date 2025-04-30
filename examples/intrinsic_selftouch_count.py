@@ -23,7 +23,7 @@ class Wrapper(gym.Wrapper):
         super().__init__(env)
 
     def compute_intrinsic_reward(self, obs):
-        intrinsic_reward = np.sum(obs['touch']>0)
+        intrinsic_reward = np.sum(obs['touch'] > 1e-6) / len(obs['touch'])
         return intrinsic_reward
 
     def step(self, action):

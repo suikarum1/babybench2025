@@ -2,13 +2,17 @@ import numpy as np
 
 
 def angle_between_vectors(v1, v2):
-        v1_unit = v1 / np.linalg.norm(v1)
-        v2_unit = v2 / np.linalg.norm(v2)
-        dot_product = np.clip(np.dot(v1_unit, v2_unit), -1.0, 1.0)
-        angle = np.arccos(dot_product)
-        return np.degrees(angle)
+    if np.linalg.norm(v1)==0 or np.linalg.norm(v2)==0:
+        return np.inf
+    v1_unit = v1 / np.linalg.norm(v1)
+    v2_unit = v2 / np.linalg.norm(v2)
+    dot_product = np.clip(np.dot(v1_unit, v2_unit), -1.0, 1.0)
+    angle = np.arccos(dot_product)
+    return np.degrees(angle)
 
 def angle_between_vector_and_rotation(vector, rotation_matrix):
+    if np.linalg.norm(vector)==0:
+        return np.inf
     # Normalize the vector
     vector = vector / np.linalg.norm(vector)
     # The forward direction is the third column of the rotation matrix

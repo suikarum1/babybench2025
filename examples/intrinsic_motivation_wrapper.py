@@ -40,7 +40,7 @@ class Wrapper(gym.Wrapper):
 def main():
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config', default='config.yml', type=str,
+    parser.add_argument('--config', default='examples/config_selftouch.yml', type=str,
                         help='The configuration file to set up environment variables')
     parser.add_argument('--train_for', default=10000, type=int,
                         help='Total timesteps of training')

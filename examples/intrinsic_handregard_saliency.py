@@ -29,7 +29,7 @@ def simple_saliency(rgb_img):
     # Apply the kernel using convolution
     edges = convolve(gray_img, laplacian_kernel, mode='reflect')
     # Compute energy as sum of squared edge intensities (normalized)
-    energy = np.sum(edges**2) / (gray_img.shape[0] * gray_img.shape[1])
+    energy = np.sqrt(np.sum(edges**2)) / (gray_img.shape[0] * gray_img.shape[1])
     return energy
 
 class Wrapper(gym.Wrapper):

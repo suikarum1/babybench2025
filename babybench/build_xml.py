@@ -9,16 +9,19 @@ MODEL = {
 }
 
 SCENE = {
+    'base' : None,
     'crib' : 'crib.xml',
     'cubes' : 'cubes.xml',
 }
 
 POSITION = {
+    'base' : 'pos="0 0 .1" euler="0 -90 0"',
     'crib' : 'pos="0 0 0.3" euler="0 -90 0"',
     'cubes' : 'pos="0 0 0.0467196" quat="0.885453 -0.000184209 -0.464728 -0.000527509"',
 }
 
 CONSTRAINTS = {
+    'base' : "",
     'crib' : """
         <equality>
             <weld body1="lower_body"/>
@@ -75,7 +78,8 @@ def build(config=None, path_to_assets='./MIMo/mimoEnv/assets/'):
     XML += f'<include file="{path_to_assets}/babybench/meta_{MODEL[behavior]}.xml"></include>\n'
 
     # Add BabyBench scene
-    XML += f'<include file="{path_to_assets}/babybench/{SCENE[scene]}"></include>\n'
+    if scene != 'base':
+        XML += f'<include file="{path_to_assets}/babybench/{SCENE[scene]}"></include>\n'
 
     # Add active actuators
     XML += '<actuator>\n'

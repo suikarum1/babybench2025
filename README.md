@@ -52,7 +52,7 @@ All done! You are ready to start using BabyBench.
    python test_installation.py
    ```
 
-This will run a test to check that the everything is correctly installed.
+This will run a test to check that the everything is correctly installed. If the installation is successful, you should find a new folder called `test_installation` in the `results` directory with a rendered video of the test.
 
 ### Option 2: Singularity container
 
@@ -72,7 +72,7 @@ This will create a singularity container called `babybench.sif` in the current d
 singularity run -c -H /home --bind "$PWD/:/home" babybench.sif
 ```
 
-This will run a test to check that the everything is correctly installed.
+This will run a test to check that the everything is correctly installed. If the installation is successful, you should find a new folder called `test_installation` in the `results` directory with a rendered video of the test.
 
 ### Troubleshooting
 

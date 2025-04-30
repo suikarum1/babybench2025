@@ -5,6 +5,7 @@
 
 save_dir : results/hand_regard
 behavior : hand_regard   # options: self_touch, hand_regard
+scene : cubes   # options: base, crib, cubes
 
 # --- Experiment parameters --- #
 

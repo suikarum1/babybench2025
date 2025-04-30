@@ -3,10 +3,12 @@
 
 # --- Mandatory options --- #
 
-save_dir : results/self_touch
+save_dir : results/test_installation
 behavior : self_touch   # options: self_touch, hand_regard
-scene : cubes   # options: crib, cubes
-actuation_model : spring_damper  # options: spring_damper, muscle, positional
+scene : base   # options: base, crib, cubes
+
+
+
 max_episode_steps : 1000
 frame_skip : 1
 render_size : 480
@@ -29,7 +31,7 @@ vision_resolution : 64
 
 # Touch
 touch_active : True
-touch_scale : 1.
+touch_scale : 2.
 touch_function : force_vector
 touch_response : spread_linear
 touch_hands : True
@@ -42,6 +44,9 @@ touch_head : True
 touch_eyes : False
 
 # --- Motor modality --- #
+
+# Actuation model
+actuation_model : spring_damper  # options: spring_damper, muscle, positional
 
 # Actuate joints
 act_hands : True
