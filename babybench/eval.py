@@ -16,6 +16,9 @@ class Eval():
         self._images = []
         self._init_track()
         
+    def _eval_logs(self, logs):
+        return None
+
     def eval_logs(self):
         try:
             with open(f'{self._save_dir}/logs/training.pkl', 'rb') as f:
@@ -99,6 +102,7 @@ class EvalHandRegard(Eval):
         self._images.append(bb_utils.evaluation_img(self._env, up='binocular'))
 
 EVALS = {
+    'none' : Eval,
     'self_touch' : EvalSelfTouch,
     'hand_regard' : EvalHandRegard,
 }

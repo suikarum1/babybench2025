@@ -3,6 +3,11 @@ from mimoEnv.envs.dummy import DEMO_XML
 
 # --- BabyBench environments ---
 
+register(id='BabyBench-None',
+         entry_point='mimoEnv.babybench:BabyBenchEnv',
+         max_episode_steps=1000,
+         )
+
 register(id='BabyBench-SelfTouch',
          entry_point='mimoEnv.babybench:BabyBenchSelfTouchEnv',
          max_episode_steps=1000,

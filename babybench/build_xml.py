@@ -4,6 +4,7 @@ sys.path.append(".")
 sys.path.append("..")
 
 MODEL = {
+    'none' : 'v1',
     'self_touch' : 'v1',
     'hand_regard' : 'v2',
 }
