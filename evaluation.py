@@ -43,9 +43,11 @@ def main():
     evaluation.eval_logs()
 
     for ep_idx in range(args.episodes):
+        print(f'Running evaluation episode {ep_idx+1}/{args.episodes}')
 
-        # Reset environment in random initial state
+        # Reset environment and evaluation
         obs, _ = env.reset()
+        evaluation.reset()
 
         for t_idx in range(args.duration):
 

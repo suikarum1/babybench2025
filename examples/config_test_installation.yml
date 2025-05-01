@@ -1,14 +1,11 @@
 # Configuration file for running BabyBench environments. See wiki for details:
 # https://babybench.github.io/2025/API/
 
-# --- Mandatory options --- #
+# --- General options --- #
 
 save_dir : results/test_installation
 behavior : self_touch   # options: self_touch, hand_regard
 scene : base   # options: base, crib, cubes
-
-
-
 max_episode_steps : 1000
 frame_skip : 1
 render_size : 480
@@ -31,7 +28,7 @@ vision_resolution : 64
 
 # Touch
 touch_active : True
-touch_scale : 2.
+touch_scale : 1.
 touch_function : force_vector
 touch_response : spread_linear
 touch_hands : True

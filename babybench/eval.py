@@ -10,8 +10,11 @@ class Eval():
         self._duration = duration
         self._render = render
         self._save_dir = save_dir
-        self._track_bodies = []
         self._images = []
+
+    def reset(self):
+        self._images = []
+        self._init_track()
         
     def eval_logs(self):
         try:
@@ -21,23 +24,20 @@ class Eval():
             print(f'Training logs not found -- make sure to use the correct save_dir in the config')
             return None
         score = self._eval_logs(logs)
-        print(f'Training score: {score}')
+        print(f'Preliminary training score: {score}')
         return None
 
     def _init_track(self):
         self._trajectories = {}
-        for body in self._track_bodies:
-            self._trajectories[body] = {}
+        self._trajectories['qpos'] = []
+        self._trajectories['info'] = []
     
     def track(self, info):
-        for body in self._track_bodies:
-            self._trajectories[body][info['steps']] = {
-                'pos' : self._env.data.body(body).xpos,
-                'mat' : self._env.data.body(body).xmat,
-            }
+        self._trajectories['qpos'].append(self._env.data.qpos.copy())
+        self._trajectories['info'].append(info)
 
     def _render_image(self):
-        self._images.append(bb_utils.evaluation_img(self._env, up='binocular'))
+        self._images.append(bb_utils.evaluation_img(self._env))
 
     def eval_step(self, info):
         self.track(info)
@@ -46,7 +46,7 @@ class Eval():
 
     def end(self, episode=0):
         # Store trajectories for submission
-        with open(f'{self._save_dir}/trajectories/episode_{episode}.pkl', 'wb') as f:
+        with open(f'{self._save_dir}/logs/episode_{episode}.pkl', 'wb') as f:
             pickle.dump(self._trajectories, f, -1)
         # Store videos for submission
         if self._render:
@@ -56,9 +56,6 @@ class EvalSelfTouch(Eval):
 
     def __init__(self, **kwargs):
         super(EvalSelfTouch, self).__init__(**kwargs)
-
-        self._track_bodies = ['right_hand','left_hand']
-        self._init_track()
 
     def _eval_logs(self, logs):
         # Count total unique touches for left and right hands
@@ -83,9 +80,6 @@ class EvalHandRegard(Eval):
     def __init__(self, **kwargs):
         super(EvalHandRegard, self).__init__(**kwargs)
 
-        self._track_bodies = ['head','left_eye','right_eye','right_hand','left_hand']
-        self._init_track()
-
     def _eval_logs(self, logs):
         # Average time looking at hands
         # during last 1000 episodes logged
@@ -100,6 +94,9 @@ class EvalHandRegard(Eval):
             steps += logs[-ep]['steps']
         score = hand_in_view / (4 * steps)
         return score
+
+    def _render_image(self):
+        self._images.append(bb_utils.evaluation_img(self._env, up='binocular'))
 
 EVALS = {
     'self_touch' : EvalSelfTouch,

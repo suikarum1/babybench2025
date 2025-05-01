@@ -166,7 +166,7 @@ def to_grayscale(x):
 
 def make_save_dirs(save_dir):
     make_dir(save_dir)
-    dirs = ['logs','trajectories','videos']
+    dirs = ['logs','videos']
     for dir_name in dirs:
         make_dir(f'{save_dir}/{dir_name}')
 
