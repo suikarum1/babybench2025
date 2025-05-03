@@ -5,17 +5,11 @@ import os
 import numpy as np
 import mujoco
 
-from mimoEnv.babybench.base import BabyBenchEnv, DEFAULT_SIZE
+from mimoEnv.babybench.base import BabyBenchEnv, DEFAULT_SIZE, SCENE_XML
 from mimoEnv.envs.mimo_env import MIMoEnv, SCENE_DIRECTORY
 from mimoActuation.actuation import SpringDamperModel
 import mimoEnv.utils as env_utils
 import mimoEnv.babybench.utils as bb_utils
-
-SCENE_XML = os.path.join(SCENE_DIRECTORY, "babybench.xml")
-""" Path to the scene.
-
-:meta hide-value:
-"""
 
 class BabyBenchSelfTouchEnv(BabyBenchEnv):
     """ 

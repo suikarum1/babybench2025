@@ -12,5 +12,6 @@
 	<!-- Import everything else -->
     <include file="babybench/base.xml"></include>
 	<include file="babybench/meta_v1.xml"></include>
-	
+	<include file="babybench/mimo_act.xml"></include>
+
 </mujoco>

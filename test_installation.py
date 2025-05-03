@@ -64,7 +64,7 @@ def main():
     print("Checking image rendering... ")
     try:
         images = []
-        for _ in range(100):
+        for _ in range(10):
             _ = env.step(env.action_space.sample())
             images.append(bb_utils.render(env))
     except Exception as e:

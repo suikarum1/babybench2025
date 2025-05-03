@@ -3,7 +3,7 @@ from mimoEnv.envs.dummy import DEMO_XML
 
 # --- BabyBench environments ---
 
-register(id='BabyBench-None',
+register(id='BabyBench',
          entry_point='mimoEnv.babybench:BabyBenchEnv',
          max_episode_steps=1000,
          )

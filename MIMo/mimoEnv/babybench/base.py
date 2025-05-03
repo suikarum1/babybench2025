@@ -28,7 +28,7 @@ from mimoActuation.muscle import MuscleModel
 import mimoEnv.utils as env_utils
 
 
-SCENE_XML = os.path.join(SCENE_DIRECTORY, "babybench_base.xml")
+SCENE_XML = os.path.join(SCENE_DIRECTORY, "babybench.xml")
 """ Path to the stand up scene.
 
 :meta hide-value:
@@ -260,7 +260,7 @@ class BabyBenchEnv(MIMoEnv):
                  height=DEFAULT_SIZE,
                  **kwargs):
 
-        if kwargs['config'] is not None:
+        if ('config' in kwargs) and (kwargs['config'] is not None): 
             # Modify default values from config values
             config = kwargs['config']
             if config['vision_active'] is not None:

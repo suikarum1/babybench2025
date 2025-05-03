@@ -14,7 +14,7 @@ sys.path.append("..")
 from babybench.build_xml import build
 
 ENVS = {
-    'none': 'BabyBench-None', 
+    'none': 'BabyBench', 
     'self_touch': 'BabyBench-SelfTouch',
     'hand_regard': 'BabyBench-HandRegard',
 }

@@ -49,11 +49,11 @@ class Eval():
 
     def end(self, episode=0):
         # Store trajectories for submission
-        with open(f'{self._save_dir}/logs/episode_{episode}.pkl', 'wb') as f:
+        with open(f'{self._save_dir}/logs/evaluation_{episode}.pkl', 'wb') as f:
             pickle.dump(self._trajectories, f, -1)
         # Store videos for submission
         if self._render:
-            bb_utils.evaluation_video(self._images, f'{self._save_dir}/videos/episode_{episode}.avi')
+            bb_utils.evaluation_video(self._images, f'{self._save_dir}/videos/evaluation_{episode}.avi')
 
 class EvalSelfTouch(Eval):
 
