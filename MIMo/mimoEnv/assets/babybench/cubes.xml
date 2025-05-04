@@ -95,4 +95,24 @@
 		</body>
     </worldbody>
 
+	<equality>
+		<weld body1="mimo_location"/>
+		<joint joint1="robot:hip_bend1" polycoef="0.532 0 0 0 0"/>
+		<joint joint1="robot:hip_lean1" polycoef="0 0 0 0 0"/>
+		<joint joint1="robot:hip_rot1" polycoef="0 0 0 0 0"/>
+		<joint joint1="robot:hip_bend2" polycoef="0.532 0 0 0 0"/>
+		<joint joint1="robot:hip_lean2" polycoef="0 0 0 0 0"/>
+		<joint joint1="robot:hip_rot2" polycoef="0 0 0 0 0"/>
+		<joint joint1="robot:head_tilt" polycoef="0.4 0 0 0 0"/>
+		<joint joint1="robot:head_tilt_side" polycoef="0 0 0 0 0"/>
+		<joint joint1="robot:right_hip1" polycoef="-1.22 0 0 0 0"/>
+		<joint joint1="robot:right_hip2" polycoef="-0.70 0 0 0 0"/>
+		<joint joint1="robot:right_hip3" polycoef="0.538 0 0 0 0"/>
+		<joint joint1="robot:right_knee" polycoef="-1.45 0 0 0 0"/>
+		<joint joint1="robot:left_hip1" polycoef="-1.41 0 0 0 0"/>
+		<joint joint1="robot:left_hip2" polycoef="-0.823 0 0 0 0"/>
+		<joint joint1="robot:left_hip3" polycoef="0.612 0 0 0 0"/>
+		<joint joint1="robot:left_knee" polycoef="-2.14 0 0 0 0"/>
+	</equality>
+
 </mujocoinclude>

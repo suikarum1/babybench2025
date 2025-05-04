@@ -12,6 +12,12 @@
 	<!-- Import everything else -->
     <include file="babybench/base.xml"></include>
 	<include file="babybench/meta_v1.xml"></include>
-	<include file="babybench/mimo_act.xml"></include>
-
+	<include file="babybench/motor_body.xml"></include>
+	<include file="babybench/motor_head.xml"></include>
+	<include file="babybench/motor_eyes.xml"></include>
+	<include file="babybench/motor_arms.xml"></include>
+	<include file="babybench/motor_hands.xml"></include>
+	<include file="babybench/motor_fingers_v1.xml"></include>
+	<include file="babybench/motor_legs.xml"></include>
+	<include file="babybench/motor_feet_v1.xml"></include>
 </mujoco>

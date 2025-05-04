@@ -55,4 +55,9 @@
             </body>
         </body>
     </worldbody>
+
+    <equality>
+            <weld body1="lower_body"/>
+    </equality>
+
 </mujocoinclude>

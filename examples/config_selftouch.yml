@@ -9,7 +9,7 @@ scene : crib   # options: base, crib, cubes
 max_episode_steps : 1000
 frame_skip : 1
 render_size : 480
-save_logs_every: 100
+save_logs_every: 1000
 
 # --- Sensory modalities --- #
 
@@ -40,7 +40,7 @@ touch_body : True
 touch_head : True
 touch_eyes : False
 
-# --- Motor modalities --- #
+# --- Motor modality --- #
 
 # Actuation model
 actuation_model : spring_damper  # options: spring_damper, muscle, positional
