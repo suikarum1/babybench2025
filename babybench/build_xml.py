@@ -1,3 +1,4 @@
+import json
 import os
 import sys
 sys.path.append(".")
@@ -64,8 +65,13 @@ def build(config=None, path_to_assets='./MIMo/mimoEnv/assets/'):
         print(e)
         exit(1)
     
-    # Initialize XML
-    XML = """<mujoco model="MIMo">\n<worldbody>\n"""
+    # Copy commented config to XML 
+    XML = '<!--\n'
+    XML += json.dumps(config, indent=4)
+    XML += '\n-->\n'
+
+    # Add worldbody
+    XML += f'<mujoco model="MIMo">\n<worldbody>\n'
 
     # Add MIMo model
     XML += f'<body name="mimo_location" {POSITION[scene]}>\n'

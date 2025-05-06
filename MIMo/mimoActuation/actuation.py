@@ -218,7 +218,6 @@ class PositionalModel(ActuationModel):
         super().__init__(env, actuators)
         self.locked_joints = self.get_locked_joints()
         
-
     def get_locked_joints(self):
         """ Collects the ids of all locked joints within actuated joints.
 

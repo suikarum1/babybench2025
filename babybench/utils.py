@@ -22,12 +22,16 @@ ENVS = {
 EPS = 1e-6
 
 def make_env(config=None, training=True):
-    make_save_dirs(config['save_dir'])
-    scene_xml = build(config, path_to_assets=os.path.abspath(
-        os.path.join(os.path.dirname(__file__), '../MIMo/mimoEnv/assets')))
     scene_path = os.path.join(config['save_dir'],'scene.xml')
-    with open(scene_path, 'w') as f:
-        print(scene_xml, file=f)
+    if training is True:
+        make_save_dirs(config['save_dir'])
+        scene_xml = build(config, path_to_assets=os.path.abspath(
+            os.path.join(os.path.dirname(__file__), '../MIMo/mimoEnv/assets')))
+        with open(scene_path, 'w') as f:
+            print(scene_xml, file=f)
+    else:
+        assert os.path.exists(config['save_dir']), "Save directory does not exist, did you run training with this config?"
+        assert os.path.exists(scene_path), "Scene file does not exist, did you run training with this config?"
     env = gym.make(
         ENVS[config['behavior']],
         model_path=os.path.abspath(scene_path),
@@ -45,24 +49,21 @@ def render(env, camera="corner"):
     img = env.mujoco_renderer.render(render_mode="rgb_array", camera_name=camera)
     return img.astype(np.uint8)
 
-def evaluation_img(env, up='closeup', down='top'):
+def evaluation_img(env, up='side2', down='top'):
     img = np.zeros((480,720,3))
     img_corner = render(env, "corner")
     img[:,:480,:] = img_corner
     # Down-right rendering
-    if down == 'top':
-        img_top = render(env, "top")
-        img[240:,480:,:] = img_top[::2,::2,:]
-    elif down == 'closeup':
-        img_close = render(env, "closeup")
-        img[240:,480:,:] = img_close[::2,::2,:]
+    if down in ['top', 'side1', 'side2', 'closeup']:
+        img_down = render(env, down)
+        img[240:,480:,:] = img_down[::2,::2,:]
     elif down == 'binocular':
         img[240:,480:,:] =  view_binocular(env)
     elif down == 'touches_with_hands':
         img[240:,480:,:] = view_touches(env, contact_with='hands')
     # Up-right rendering
-    if up == 'top':
-        img_top = render(env, "top")
+    if up in ['top', 'side1', 'side2', 'closeup']:
+        img_top = render(env, up)
         img[:240,480:,:] = img_top[::2,::2,:] 
     elif up == 'closeup':
         img_close = render(env, "closeup")

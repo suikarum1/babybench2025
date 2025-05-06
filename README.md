@@ -16,7 +16,7 @@ The first **BabyBench Competition** will take place at the [***IEEE* ICDL 2025 C
 
 ### Option 1: Local installation
 
-Pre-requisites: [Python](https://www.python.org/), [Git](https://git-scm.com/), and [Conda](https://www.anaconda.com/products/individual). All software has been tested on Ubuntu 18.04 and 24.04, MS Windows 10, and MacOS 11.
+Pre-requisites: [Python](https://www.python.org/), [Git](https://git-scm.com/), and [Conda](https://www.anaconda.com/products/individual). Tested on Ubuntu 18.04 and 24.04, MS Windows 10 and 11, and MacOS 15.
 
 1. Create a conda environment:
    
@@ -56,7 +56,7 @@ This will run a test to check that the everything is correctly installed. If the
 
 ### Option 2: Singularity container
 
-Pre-requisites: [Singularity](https://neuro.debian.net/install_pkg.html?p=singularity-container). All software has been tested on Ubuntu 24.04.
+Pre-requisites: [Singularity](https://neuro.debian.net/install_pkg.html?p=singularity-container). Tested on Ubuntu 24.04.
 
 1. Create the singularity container
 

@@ -15,7 +15,7 @@ import babybench.eval as bb_eval
 def main():
     
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config', default='examples/config_selftouch.yml', type=str,
+    parser.add_argument('--config', default='examples/config_test_installation.yml', type=str,
                         help='The configuration file to set up environment variables')
     parser.add_argument('--render', default=True,  type=bool,
                         help='Renders a video for each episode during the evaluation.')
