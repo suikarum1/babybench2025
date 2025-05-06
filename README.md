@@ -1,3 +1,5 @@
+![BabyBench: A Multimodal Benchmark of Infant Behaviors for Developmental Artificial Intelligence](babybench/banner.png)
+
 # BabyBench 2025 Competition Starter Kit
 
 BabyBench is a multimodal benchmark for intrinsic motivations and open-ended learning in developmental artificial ingelligence. The objective is to teach typical behavioral milestones to [MIMo](https://github.com/trieschlab/MIMo), a multimodal infant model. We provide the embodiment, the simulation environments, and the evaluation metrics; all you need is to implement your ideas.
@@ -84,7 +86,6 @@ If you are not sure where to begin, we recommend having a look at the `examples`
 
 The aim for BabyBench is to get MIMo to learn the [target behaviors](https://babybench.github.io/2025/about) without any external supervision, i.e. without extrinsic rewards. Your goal is to train a policy that matches sensory observation (proprioception, vision, touch) to actions. To do so, we provide an [API](https://babybench.github.io/2025/API) to initialize and interact with the environments.
 
-
 ## Prepare your submission
 
 Submissions must be made through [PaperPlaza](https://ras.papercept.net/). The topic of this first BabyBench competition is *how infants discover their own bodies*. There are two target behaviors: **self-touch** and **hand regard**.
@@ -98,9 +99,9 @@ First-round submission should consist of:
 - The trajectory log files generated during the evaluation,
 
 - *Optionally*, you can also submit links to the following:  
-
-   * A repository with your training code,
-   * A folder with videos of the learned behaviors rendered during the evaluation.
+  
+  * A repository with your training code,
+  * A folder with videos of the learned behaviors rendered during the evaluation.
 
 ## How to...?
 
