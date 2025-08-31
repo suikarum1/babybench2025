@@ -12,8 +12,32 @@ import mimoEnv.utils as env_utils
 import babybench.utils as bb_utils
 import babybench.eval as bb_eval
 
+from stable_baselines3 import PPO
+
+
+class Wrapper(gym.Wrapper):
+    def __init__(self, env):
+        super().__init__(env)
+
+
+    def compute_intrinsic_reward(self, obs):
+        intrinsic_reward = np.sum(obs['touch'] > 1e-6) / len(obs['touch'])
+        # print(obs['touch'])
+        # print(len(obs['touch']))
+        return intrinsic_reward
+
+    def step(self, action):
+        obs, extrinsic_reward, terminated, truncated, info = self.env.step(action)
+        intrinsic_reward = self.compute_intrinsic_reward(obs)
+        total_reward = intrinsic_reward + extrinsic_reward # extrinsic reward is always 0  
+        return obs, total_reward, terminated, truncated, info
+
+    def reset(self, **kwargs):
+        return self.env.reset(**kwargs)
+
+
+
 def main():
-    
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', default='examples/config_test_installation.yml', type=str,
                         help='The configuration file to set up environment variables')
@@ -29,45 +53,32 @@ def main():
         config = yaml.safe_load(f)
 
     env = bb_utils.make_env(config, training=False)
-    env.reset()
+    wrapped_env = Wrapper(env)
+    wrapped_env.reset()
 
-    # Initialize evaluation object
+    model = PPO.load("results/self_touch/model.zip", env=wrapped_env, device="auto")  # keep your path
+
     evaluation = bb_eval.EVALS[config['behavior']](
-        env=env,
+        env=wrapped_env,
         duration=args.duration,
         render=args.render,
         save_dir=config['save_dir'],
     )
 
-    # Preview evaluation of training log
     evaluation.eval_logs()
 
     for ep_idx in range(args.episodes):
         print(f'Running evaluation episode {ep_idx+1}/{args.episodes}')
-
-        # Reset environment and evaluation
-        obs, _ = env.reset()
+        obs, _ = wrapped_env.reset()
         evaluation.reset()
 
         for t_idx in range(args.duration):
-
-            # Select action
-            action = env.action_space.sample()
-
-            # ---------------------------------------------------# 
-            #                                                    #
-            # TODO REPLACE WITH CALL TO YOUR TRAINED POLICY HERE #
-            # action = policy(obs)                               #
-            #                                                    #
-            # ---------------------------------------------------#
-
-            # Perform step in simulation
-            obs, _, _, _, info = env.step(action)
-
-            # Perform evaluations of step
+            action, _ = model.predict(obs, deterministic=True)
+            obs, _, _, _, info = wrapped_env.step(action)
             evaluation.eval_step(info)
             
         evaluation.end(episode=ep_idx)
+
 
 if __name__ == '__main__':
     main()

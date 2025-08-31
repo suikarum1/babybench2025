@@ -24,7 +24,7 @@ vestibular_active : False
 
 # Vision
 vision_active : True
-vision_resolution : 64
+vision_resolution : 128 #64
 
 # Touch
 touch_active : False
