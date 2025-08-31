@@ -1,8 +1,16 @@
-### BabyBench 2025
-##### Exploration by Disagreement in an Embodied Infant: Self-Touch and Hand Regard
-We investigate emergent sensorimotor devel- opment in a simulated infant (MIMo) through disagreement-driven exploration. Our method uses an ensemble of linear forward models to predict compressed sensory features, with ensemble variance serving as an intrinsic reward signal that drives exploration toward novel but learnable sensorimotor configurations. Our framework provides a com- putationally efficient, modality-agnostic approach to intrinsically motivated sensorimotor learning that captures key aspects of early infant development.
+## BabyBench 2025
+### Exploration by Disagreement in an Embodied Infant: Self-Touch and Hand Regard
 
-After local installation of BabyBench Starter Kit (https://github.com/babybench/babybench2025_starter_kit), the disagreement-driven exploration code can be ran and evaluated as following, taking the self-touch task as an example:
+This repository contains the code and configuration files for our BabyBench 2025 extended abstract submission to ICDL 2025.
+
+We investigate emergent sensorimotor development in a simulated infant (MIMo: https://github.com/trieschlab/MIMo) using a disagreement-driven intrinsic motivation strategy. Our method trains an ensemble of lightweight linear forward models to predict compressed sensory features. The ensemble variance serves as an intrinsic reward signal, encouraging the agent to explore novel yet learnable sensorimotor configurations.
+
+This framework is:
+- Computationally efficient
+- Modality-agnostic
+- Capable of capturing early developmental phenomena such as self-touch and hand regard
+
+After local installation of BabyBench 2025 Starter Kit (https://github.com/babybench/babybench2025_starter_kit), you can run and evaluate our disagreement-based exploration method on different behavioral tasks as follows, taking the self-touch task as an example:
 1. Model training:
    
    ```
@@ -13,4 +21,4 @@ After local installation of BabyBench Starter Kit (https://github.com/babybench/
    ```
    python evaluation_selftouch_disagreement.py --config=examples/config_selftouch.yml --episodes=5 --duration=10000                                    
    ``` 
-This step generates preview videos of the prediction on infant behaviors.
+This step will generate preview videos of the infant's behavior under the learned intrinsic policies.
